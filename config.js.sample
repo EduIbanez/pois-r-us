@@ -1,0 +1,54 @@
+// =============================================================================
+//  This file contains all the configuration parameters for the application.
+//  Note that this is a sample file with fake values; DO NOT USE THEM IN A REAL
+//  PROJECT. Since the real file may contain sensitive data, it should never
+//  be commited to a public repository.
+// -----------------------------------------------------------------------------
+//  This is a sample file. In order to run the project, you must provide a file
+//  like this one without the '.sample' extension, changing the fake values by
+//  real ones.
+// =============================================================================
+
+var configuration = {};
+
+// Different configurations for different environments
+switch(process.env.NODE_ENV) {
+    case 'test':
+        configuration.port = 3000;
+        configuration.staticFiles = '/public';
+        configuration.database = {
+            uri: 'mongodb://localhost/sample-test',
+            user: 'dummy',
+            password: 's3cr3t'
+        };
+        configuration.log = { enabled: false };
+        break;
+    case 'dev':
+        configuration.port = 3000;
+        configuration.staticFiles = '/public';
+        configuration.database = {
+            uri: 'mongodb://localhost/sample-dev',
+            user: 'dummy',
+            password: 's3cr3t'
+        };
+        configuration.log = {
+            enabled: true,
+            level: 'dev'
+        };
+        break;
+    default:
+        configuration.port = 3000;
+        configuration.staticFiles = '/public';
+        configuration.database = {
+            uri: 'mongodb://localhost/sample',
+            user: 'dummy',
+            password: 's3cr3t'
+        };
+        configuration.log = {
+            enabled: true,
+            level: 'combined'
+        };
+        break;
+}
+
+module.exports = configuration;
