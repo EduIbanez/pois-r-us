@@ -4,7 +4,7 @@
 // =============================================================================
 
 var express = require('express');
-var mongoOp = require("../models/mongo");
+var mongoOp = require("./models/mongo");
 var API_ROUTES = require('../common/api-routes');
 
 
