@@ -19,6 +19,10 @@ config.js
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/.name
 
 # Gradle:
 .idea/gradle.xml
