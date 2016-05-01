@@ -1,0 +1,73 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">POIs r' Us</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li data-ng-class="{ active: activeSection === 'map' }">
+                    <a data-ui-sref="map">
+                        <span class="fa fa-map"></span>
+                        &nbsp;Map
+                        <span class="sr-only"
+                                data-ng-if="activeSection === 'map'">
+                            (current)
+                        </span>
+                    </a>
+                </li>
+                <li data-ng-class="{ active: activeSection === 'stats' }"
+                        data-ng-if="sessionActive()">
+                    <a data-ui-sref="stats">
+                        <span class="fa fa-bar-chart"></span>
+                        &nbsp;Stats
+                        <span class="sr-only"
+                                data-ng-if="activeSection === 'stats'">
+                            (current)
+                        </span>
+                    </a>
+                </li>
+                <li data-ng-class="{ active: activeSection === 'settings' }"
+                        data-ng-if="sessionActive()">
+                    <a data-ui-sref="settings">
+                        <span class="fa fa-cog"></span>
+                        &nbsp;Settings
+                        <span class="sr-only"
+                                data-ng-if="activeSection === 'settings'">
+                            (current)
+                        </span>
+                    </a>
+                </li>
+                <li data-ng-if="sessionActive()">
+                    <!-- <a href="#"> -->
+                    <a data-ng-click="logOut()">
+                        <span class="fa fa-sign-out"></span>&nbsp;Log out
+                    </a>
+                </li>
+                <li data-ng-class="{ active: activeSection === 'login' }"
+                        data-ng-if="!sessionActive()">
+                    <a data-ui-sref="login">
+                        <span class="fa fa-sign-in"></span>
+                        &nbsp;Login
+                        <span class="sr-only"
+                                data-ng-if="activeSection === 'login'">
+                            (current)
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,36 @@
+<div class="action-buttons btn-group">
+
+    <button type="button"
+            class="btn btn-primary"
+            data-ng-click="onSearch()">
+        <span class="fa fa-search"></span>
+        <span class="hidden-xs"
+                data-ng-if="sessionActive()">
+            &nbsp;Search
+        </span>
+    </button>
+
+    <button type="button"
+            class="btn btn-primary"
+            data-ng-click="onPois()"
+            data-ng-if="sessionActive()">
+        <span class="fa fa-map-marker"></span>
+        <span class="hidden-xs">&nbsp;POIs</span>
+    </button>
+
+    <button type="button"
+            class="btn btn-primary"
+            data-ng-click="onRoutes()"
+            data-ng-if="sessionActive()">
+        <span class="fa fa-road"></span>
+        <span class="hidden-xs">&nbsp;Routes</span>
+    </button>
+
+    <button type="button"
+            class="btn btn-success"
+            data-ng-click="onAdd()"
+            data-ng-if="sessionActive()">
+        <span class="fa fa-plus"></span>
+    </button>
+
+</div>

@@ -3,13 +3,30 @@ var app = angular.module('PoisRUs', ['ui.router', 'ngResource']);
 app.config(function($stateProvider, $urlRouterProvider) {
     
     $stateProvider
-        .state('home', {
-            url: '/home',
-            templateUrl: '/templates/views/home.html',
-            controller: 'HomeCtrl'
+
+        .state('login', {
+            url: '/login',
+            templateUrl: '/templates/views/login.html',
+            controller: 'LoginCtrl'
         })
 
-    $urlRouterProvider.otherwise('home');
+        .state('map', {
+            url: '/map',
+            templateUrl: '/templates/views/map.html',
+            controller: 'MapCtrl'
+        })
+
+        .state('stats', {
+            url: '/stats',
+            templateUrl: '/templates/views/stats.html',
+        })
+
+        .state('settings', {
+            url: '/settings',
+            templateUrl: '/templates/views/settings.html',
+        })
+
+    $urlRouterProvider.otherwise('map');
 
 });
 
