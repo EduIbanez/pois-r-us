@@ -4,11 +4,11 @@ var mongoose = require("mongoose");
 var mongoSchema = mongoose.Schema;
 
 // create schema
-var userSchema  = {
+var userSchema  = new mongoSchema({
     "email" : String,
     "password" : String,
     "role" : String
-};
+});
 
 var poiSchema = new mongoSchema({
     "name" : String,
@@ -16,7 +16,7 @@ var poiSchema = new mongoSchema({
     "punctuation" : Number,
     "number_votes" : Number,
     "file" : { data: Buffer, contentType: String },
-    "id_user" : ObjectId
+    "id_user" : mongoSchema.Types.ObjectId
 });
 
 // create model if not exists.
