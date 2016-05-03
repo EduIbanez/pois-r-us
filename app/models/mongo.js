@@ -5,14 +5,18 @@ var mongoSchema = mongoose.Schema;
 
 // create schema
 var userSchema  = {
-    "userEmail" : String,
-    "userPassword" : String
+    "email" : String,
+    "password" : String,
+    "role" : String
 };
 
 var poiSchema = new mongoSchema({
     "name" : String,
     "description" : String,
-    "file" : { data: Buffer, contentType: String }
+    "punctuation" : Double,
+    "number_votes" : Integer,
+    "file" : { data: Buffer, contentType: String },
+    "id_user" : ObjectId
 });
 
 // create model if not exists.

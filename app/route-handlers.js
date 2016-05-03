@@ -4,6 +4,7 @@
 // =============================================================================
 
 var express = require('express');
+var fs = require('fs');
 var mongoOp = require("./models/mongo");
 var API_ROUTES = require('../common/api-routes');
 
@@ -40,12 +41,13 @@ apiRoutes.route(API_ROUTES.USERS)
         var response = {};
         // fetch email and password from REST request.
         // Add strict validation when you use this in Production.
-        db.userEmail = req.body.email;
+        db.email = req.body.email;
         // Hash the password using SHA1 algorithm.
-        db.userPassword =  require('crypto')
+        db.password =  require('crypto')
             .createHash('sha1')
             .update(req.body.password)
             .digest('base64');
+        db.role = req.body.role;
 
         db.save(function(err) {
             // save() will run insert() command of MongoDB.
@@ -91,13 +93,17 @@ apiRoutes.route(API_ROUTES.USERS + "/:id")
             } else {
                 // we got data from Mongo.
                 // change it accordingly.
-                if(req.body.userEmail !== undefined) {
+                if(req.body.email !== undefined) {
                     // case where email needs to be updated.
-                    data.userEmail = req.body.userEmail;
+                    data.email = req.body.email;
                 }
-                if(req.body.userPassword !== undefined) {
+                if(req.body.password !== undefined) {
                     // case where password needs to be updated
-                    data.userPassword = req.body.userPassword;
+                    data.password = req.body.password;
+                }
+                if(req.body.role !== undefined) {
+                    // case where role needs to be updated
+                    data.role = req.body.role;
                 }
                 // save the data
                 data.save(function(err) {
@@ -156,10 +162,14 @@ apiRoutes.route(API_ROUTES.POIS)
         console.log(req.body);
         var db = new mongoOp();
         var response = {};
-        // fetch email and password from REST request.
-        // Add strict validation when you use this in Production.
+
         db.name = req.body.name;
         db.description =  req.body.description;
+        db.punctuation = req.body.punctuation;
+        db.number_votes = req.body.number_votes;
+        db.file.data = fs.readFileSync(req.body.path);
+        db.file.contentType = 'image/png';
+        db.id_user = req.body.id_user;
 
         db.save(function(err) {
             // save() will run insert() command of MongoDB.
@@ -210,6 +220,19 @@ apiRoutes.route(API_ROUTES.POIS + "/:id")
                 }
                 if(req.body.description !== undefined) {
                     data.description = req.body.description;
+                }
+                if(req.body.punctuation !== undefined) {
+                    db.punctuation = req.body.punctuation;
+                }
+                if(req.body.number_votes !== undefined) {
+                    db.number_votes = req.body.number_votes;
+                }
+                if(req.body.path !== undefined) {
+                    db.file.data = fs.readFileSync(req.body.path);
+                    db.file.contentType = 'image/png';
+                }
+                if(req.body.id_user !== undefined) {
+                    db.id_user = req.body.id_user;
                 }
                 // save the data
                 data.save(function(err) {
