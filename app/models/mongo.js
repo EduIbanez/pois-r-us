@@ -13,8 +13,8 @@ var userSchema  = {
 var poiSchema = new mongoSchema({
     "name" : String,
     "description" : String,
-    "punctuation" : Double,
-    "number_votes" : Integer,
+    "punctuation" : Number,
+    "number_votes" : Number,
     "file" : { data: Buffer, contentType: String },
     "id_user" : ObjectId
 });
