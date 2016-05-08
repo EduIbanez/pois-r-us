@@ -7,7 +7,8 @@ var mongoSchema = mongoose.Schema;
 var userSchema  = new mongoSchema({
     "email" : String,
     "password" : String,
-    "role" : String
+    "role" : String,
+    created_at: { type: Date, required: true, default: Date.now() }
 });
 
 var poiSchema = new mongoSchema({
