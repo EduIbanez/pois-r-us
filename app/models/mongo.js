@@ -17,7 +17,7 @@ var poiSchema = new mongoSchema({
     "coordinates" : [Number, Number],
     "punctuation" : Number,
     "number_votes" : Number,
-    "file" : { data: Buffer, contentType: String },
+    "file" : String,
     "id_user" : mongoSchema.Types.ObjectId
 });
 
