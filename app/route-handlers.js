@@ -166,6 +166,7 @@ apiRoutes.route(API_ROUTES.POIS)
         db.name = req.body.name;
         db.description =  req.body.description;
         db.punctuation = req.body.punctuation;
+        db.coordinates = req.body.coordinates;
         db.number_votes = req.body.number_votes;
         db.file.data = fs.readFileSync(req.body.path);
         db.file.contentType = 'image/png';
@@ -220,6 +221,9 @@ apiRoutes.route(API_ROUTES.POIS + "/:id")
                 }
                 if(req.body.description !== undefined) {
                     data.description = req.body.description;
+                }
+                if(req.body.coordinates !== undefined) {
+                    data.coordinates = req.body.coordinates;
                 }
                 if(req.body.punctuation !== undefined) {
                     db.punctuation = req.body.punctuation;

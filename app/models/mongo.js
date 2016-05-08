@@ -8,12 +8,13 @@ var userSchema  = new mongoSchema({
     "email" : String,
     "password" : String,
     "role" : String,
-    created_at: { type: Date, required: true, default: Date.now() }
+    "created_at": { type: Date, required: true, default: Date.now() }
 });
 
 var poiSchema = new mongoSchema({
     "name" : String,
     "description" : String,
+    "coordinates" : [Number, Number],
     "punctuation" : Number,
     "number_votes" : Number,
     "file" : { data: Buffer, contentType: String },
