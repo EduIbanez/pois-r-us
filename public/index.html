@@ -30,9 +30,11 @@
     <script src="scripts/controllers/login-controller.js"></script>
     <script src="scripts/controllers/map-controller.js"></script>
     <script src="scripts/directives/map-actions.js"></script>
+    <script src="scripts/directives/map.js"></script>
     <script src="scripts/directives/modal-dialog.js"></script>
     <script src="scripts/directives/navbar.js"></script>
     <script src="scripts/services/api-service.js"></script>
+    <script src="scripts/services/map-service.js"></script>
     <script src="scripts/services/session-service.js"></script>
     <script src="../common/api-routes.js"></script>
     <!-- endinject -->
@@ -43,6 +45,9 @@
     <div ng-app="PoisRUs">
         <ui-view></ui-view>
     </div>
+
+    <!-- GOOGLE MAPS LIBRARY -->
+    <script src="https://maps.googleapis.com/maps/api/js?callback=_mapLoader.onLoad" async defer></script>
 
 </body>
 </html>

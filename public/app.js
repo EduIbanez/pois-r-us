@@ -31,6 +31,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 });
 
 app.constant('BaseRoutes', {
-    globalRoot: 'http://localhost:3000',
-    apiRoot: 'http://localhost:3000/api'
+    globalRoot: '',
+    apiRoot: '/api'
 });
