@@ -10,6 +10,7 @@
 // -----------------------------------------------------------------------------
 
 var _apiDefinition = {
+    AUTH         : '/auth',
     USERS        : '/users',
     SINGLE_USER  : '/users/:userId',
     POIS         : '/pois',

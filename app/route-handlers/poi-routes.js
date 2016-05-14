@@ -1,6 +1,7 @@
 var express  = require('express');
 var apiPaths = require('../../common/api-routes');
 var PoiModel = require('../models/poi-model');
+var authMiddleware = require('./auth-middleware');
 
 var router = express.Router();
 
@@ -17,11 +18,11 @@ router.route(apiPaths.POIS)
             }
         });
     })
-    .post(function(req, res) {
+    .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         new PoiModel({
             name: req.body.name,
             description: req.body.description,
-            owner_id: req.body.owner_id,
+            owner_id: req.auth._id,
             file_uri: req.body.file_uri,
             coordinates: {
                 lat: req.body.lat,
@@ -52,12 +53,18 @@ router.route(apiPaths.SINGLE_POI)
             }
         });
     })
-    .put(function(req, res) {
+    .put(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         PoiModel.findById(req.params.poiId, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
+            } else if (data && req.auth.id !== data.owner_id) {
+                response = {
+                    error: true,
+                    message: 'Not authorized to PUT to ' + req.url
+                };
+                res.status(401).json(response);
             } else if (data) {
                 // Coordinates, score and number of votes shouldn't
                 // be updated through PUT /pois/:poiId
@@ -79,12 +86,18 @@ router.route(apiPaths.SINGLE_POI)
             }
         });
     })
-    .delete(function(req, res) {
+    .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         PoiModel.findByIdAndRemove(req.params.poiId, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
+            } else if (data && req.auth.id !== data.owner_id) {
+                response = {
+                    error: true,
+                    message: 'Not authorized to PUT to ' + req.url
+                };
+                res.status(401).json(response);
             } else if (data) {
                 response = { error: false, message: data };
                 res.json(response);
@@ -96,7 +109,7 @@ router.route(apiPaths.SINGLE_POI)
     })
 
 router.route(apiPaths.POI_RATINGS)
-    .post(function(req, res) {
+    .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         PoiModel.findById(req.params.poiId, function(err, data) {
             var response = {};
             if(err) {
@@ -117,6 +130,6 @@ router.route(apiPaths.POI_RATINGS)
                 res.status(404).json(response);
             }
         });
-    })
+    });
 
 module.exports = router;

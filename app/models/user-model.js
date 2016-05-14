@@ -26,7 +26,23 @@ userSchema.pre('save', function(callback) {
 
 // Method to validate the password of a user asynchronously
 userSchema.methods.validatePassword = function(password, callback) {
-    bcrypt.compare(password, this.password, callback);
+    if (this.password) bcrypt.compare(password, this.password, callback);
+    else callback('User data does not contain any password field');
+}
+
+// Method to validate the credentials of a user
+userSchema.statics.validateCredentials = function(email, password, callback) {
+    console.log(email,password);
+    return this.findOne({ email: email },
+                        function(err, user) {
+        if (err) callback(err); // MongoDB error
+        else if (!user) callback(null, null);  //User not found
+        else user.validatePassword(password, function(err, match) {
+            if (err) callback(err); // Internal error
+            else if (!match) callback(null, null);
+            else callback(null, user);
+        });
+    });
 }
 
 module.exports = mongoose.model('User', userSchema);

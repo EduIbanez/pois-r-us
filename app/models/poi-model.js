@@ -10,7 +10,7 @@ var poiSchema  = new Schema({
     'file_uri'        : { type: String },
     'avg_punctuation' : { type: Number, required: true, default: 0 },
     'number_of_votes' : { type: Number, required: true, default: 0 },
-    'created_at' : { type : Date, required    : true, default : Date.now() },
+    'created_at'  : { type : Date, required    : true, default : Date.now() },
     'coordinates' : {
         'lat': { type: Number, required: true },
         'lon': { type: Number, required: true }
