@@ -1,6 +1,6 @@
 angular.module('PoisRUs').controller('MapCtrl', [
-    '$scope', 'ApiService',
-    function($scope, ApiService) {
+    '$scope',
+    function($scope) {
 
         $scope.modalOpen = false;
         $scope.modalData = {};

@@ -21,7 +21,7 @@ router.route(apiPaths.USERS)
         });
     })
     .post(function(req, res) {
-        var _password = crypto.randomBytes(16).toString('hex');
+        var _password = crypto.randomBytes(4).toString('hex');
         new UserModel({
             email: req.body.email,
             first_name: req.body.first_name,
