@@ -52,14 +52,15 @@ var basicHttpAuthInterceptor = function(req, res, next) {
  * nothing; otherwise it will return to the user a 401 error with some feedback
  */
 var restrictToAuthenticated = function(req, res, next) {
+    // XXX: Not sending WWW-Authenticate header for preventing the browser to display login popup.
     if (!req.auth || req.auth.error === 'AUTH_NOT_FOUND') {
-        res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
+        // res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
         res.status(401).json({ error: 'No auth information was found' });
     } else if (req.auth.error === 'WRONG_AUTH_METHOD') {
-        res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
+        // res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
         res.status(401).json({ error: 'Wrong auth method' });
     } else if (req.auth.error === 'WRONG_CREDENTIALS') {
-        res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
+        // res.set('WWW-Authenticate', 'Basic realm="PoisRUs"');
         res.status(401).json({ error: 'Authentication failed' });
     } else next();
 };

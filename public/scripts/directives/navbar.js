@@ -1,6 +1,6 @@
 angular.module('PoisRUs').directive('navbar', [
-    '$state', 'userService',
-    function($state, userService) {
+    '$state', 'sessionService',
+    function($state, sessionService) {
         return {
             replace: true,
             restrict: 'A',
@@ -11,10 +11,10 @@ angular.module('PoisRUs').directive('navbar', [
             link: function (scope, element, attrs) {
                 scope.logOut = function() {
                     $state.go('login');
-                    userService.logOut();
+                    sessionService.logout();
                 };
                 scope.sessionActive = function() {
-                    return userService.isLoggedIn()
+                    return sessionService.isLoggedIn()
                 };
             }
         };

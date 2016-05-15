@@ -1,6 +1,6 @@
 angular.module('PoisRUs').directive('mapActions', [
-    'userService',
-    function(userService) {
+    'sessionService',
+    function(sessionService) {
         return {
             replace: true,
             restrict: 'A',
@@ -13,7 +13,7 @@ angular.module('PoisRUs').directive('mapActions', [
             },
             link: function(scope, element, attrs) {
                 scope.sessionActive = function() {
-                    return userService.isLoggedIn()
+                    return sessionService.isLoggedIn()
                 };
             }
         }

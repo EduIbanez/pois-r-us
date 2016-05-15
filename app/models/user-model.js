@@ -32,7 +32,6 @@ userSchema.methods.validatePassword = function(password, callback) {
 
 // Method to validate the credentials of a user
 userSchema.statics.validateCredentials = function(email, password, callback) {
-    console.log(email,password);
     return this.findOne({ email: email },
                         function(err, user) {
         if (err) callback(err); // MongoDB error

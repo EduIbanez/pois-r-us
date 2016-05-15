@@ -26,6 +26,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: '/templates/views/settings.html',
         })
 
+        .state('admin', {
+            url: '/admin',
+            templateUrl: '/templates/views/stats.html',
+        })
+
     $urlRouterProvider.otherwise('map');
 
 });
