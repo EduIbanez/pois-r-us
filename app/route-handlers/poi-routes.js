@@ -1,7 +1,8 @@
 var express  = require('express');
 var apiPaths = require('../../common/api-routes');
 var PoiModel = require('../models/poi-model');
-var authMiddleware = require('./auth-middleware');
+var formatConversor = require('../format-conversor');
+var authMiddleware  = require('./auth-middleware');
 
 var router = express.Router();
 
@@ -13,7 +14,10 @@ router.route(apiPaths.POIS)
                 response = { error: true, message: err };
                 res.status(500).json(response);
             } else {
-                response = { error: false, message: data };
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
                 res.json(response);
             }
         });
@@ -22,7 +26,7 @@ router.route(apiPaths.POIS)
         new PoiModel({
             name: req.body.name,
             description: req.body.description,
-            owner_id: req.auth._id,
+            owner_id: req.auth.id,
             file_uri: req.body.file_uri,
             coordinates: {
                 lat: req.body.lat,
@@ -34,7 +38,10 @@ router.route(apiPaths.POIS)
                 response = { error: true, message: err };
                 res.status(400).json(response);
             } else {
-                response = { error: false, message: data };
+                response = {
+                    error: false,
+                    message: formatConversor.poiDBtoAPI(data)
+                };
                 res.json(response);
             }
         });
@@ -48,7 +55,10 @@ router.route(apiPaths.SINGLE_POI)
                 response = { error: true, message: err };
                 res.status(500).json(response);
             } else {
-                response = { error: false, message: data };
+                response = {
+                    error: false,
+                    message: formatConversor.poiDBtoAPI(data)
+                };
                 res.json(response);
             }
         });
@@ -76,7 +86,10 @@ router.route(apiPaths.SINGLE_POI)
                         response = { error: true, message: err };
                         res.status(400).json(response);
                     } else {
-                        response = { error: false, message: data };
+                        response = {
+                            error: false,
+                            message: formatConversor.poiDBtoAPI(data)
+                        };
                         res.json(response);
                     }
                 });
@@ -99,7 +112,10 @@ router.route(apiPaths.SINGLE_POI)
                 };
                 res.status(401).json(response);
             } else if (data) {
-                response = { error: false, message: data };
+                response = {
+                    error: false,
+                    message: formatConversor.poiDBtoAPI(data)
+                };
                 res.json(response);
             } else {
                 response = { error: true, message: data };
@@ -121,7 +137,10 @@ router.route(apiPaths.POI_RATINGS)
                         response = { error: true, message: err };
                         res.status(400).json(response);
                     } else {
-                        response = { error: false, message: data };
+                        response = {
+                            error: false,
+                            message: formatConversor.poiDBtoAPI(data)
+                        };
                         res.json(response);
                     }
                 });

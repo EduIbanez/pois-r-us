@@ -2,7 +2,8 @@ var express   = require('express');
 var crypto    = require('crypto');
 var apiPaths  = require('../../common/api-routes');
 var UserModel = require('../models/user-model');
-var authMiddleware = require('./auth-middleware');
+var formatConversor = require('../format-conversor');
+var authMiddleware  = require('./auth-middleware');
 
 var router = express.Router();
 
@@ -15,26 +16,29 @@ router.route(apiPaths.USERS)
                 var response = { error: true, message: 'Error fetching data' };
                 res.status(500).json(response);
             } else {
-                var response = { error: false, message: data };
+                var response = {
+                    error: false,
+                    message: data.map(formatConversor.userDBtoAPI)
+                };
                 res.json(response);
             }
         });
     })
     .post(function(req, res) {
         var _password = crypto.randomBytes(4).toString('hex');
-        new UserModel({
+        new UserModel(formatConversor.userAPItoDB({
             email: req.body.email,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             password: _password
-        }).save(function(err, data) {
+        })).save(function(err, data) {
             if (err) {
                 var response = { error: true, message: err };
                 res.status(400).json(response);
             } else {
                 var response = {
                     error: false,
-                    message: data,
+                    message: formatConversor.userDBtoAPI(data),
                     password: _password
                 };
                 res.json(response);
@@ -53,7 +57,10 @@ router.route(apiPaths.SINGLE_USER)
                 var response = { error: true, message: err };
                 res.status(400).json(response);
             } else if (data) {
-                var response = { error: false, message: data };
+                var response = {
+                    error: false,
+                    message: formatConversor.userDBtoAPI(data)
+                };
                 res.json(response);
             } else {
                 var response = { error: true, message: data };
@@ -62,22 +69,26 @@ router.route(apiPaths.SINGLE_USER)
         });
     })
     .put(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
+        var _newData = formatConversor.userAPItoDB(req.body);
         if (req.auth.id.toString() === req.params.userId) {
             UserModel.findById(req.params.userId, function(err, data) {
                 if (err) {
                     var response = { error: true, message: err };
                     res.status(500).json(response);
                 } else if (data) {
-                    data.email = req.body.email || data.email;
-                    data.password = req.body.password || data.password;
-                    data.first_name = req.body.first_name || data.first_name;
-                    data.last_name = req.body.last_name || data.last_name;
+                    data.email      = _newData.email || data.email;
+                    data.password   = _newData.password || data.password;
+                    data.first_name = _newData.first_name || data.first_name;
+                    data.last_name  = _newData.last_name || data.last_name;
                     data.save(function(err, data) {
                         if(err) {
                             var response = { error: true, message: err };
                             res.status(400).json(response);
                         } else {
-                            var response = { error: false, message: data };
+                            var response = {
+                                error: false,
+                                message: formatConversor.userDBtoAPI(data)
+                            };
                             res.json(response);
                         }
                     });
@@ -98,7 +109,10 @@ router.route(apiPaths.SINGLE_USER)
                     response = { error: true, message: err };
                     res.status(500).json(response);
                 } else if (data) {
-                    response = { error: false, message: data };
+                    response = {
+                        error: false,
+                        message: formatConversor.userDBtoAPI(data)
+                    };
                     res.json(response);
                 } else {
                     response = { error: true, message: data };
