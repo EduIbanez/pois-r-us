@@ -24,6 +24,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         .state('settings', {
             url: '/settings',
             templateUrl: '/templates/views/settings.html',
+            controller: 'SettingsCtrl'
         })
 
         .state('admin', {

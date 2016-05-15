@@ -12,37 +12,57 @@
                     Modify your data
                 </h2>
             </div>
-            <form data-ng-submit="fakeLogin()">
+            <form data-ng-submit="updateInfo()">
                 <div class="form-group">
+                    <label for="name">First Name</label>
                     <input type="text"
                             class="form-control"
                             id="name"
-                            placeholder="First name">
+                            data-ng-model="userData.fName"
+                            placeholder="{{ placeholders.firstName }}">
                 </div>
                 <div class="form-group">
+                    <label for="name">Last Name</label>
                     <input type="text"
                             class="form-control"
                             id="lastname"
-                            placeholder="Last name">
+                            data-ng-model="userData.lName"
+                            placeholder="{{ placeholders.lastName }}">
                 </div>
                 <div class="form-group">
+                    <label for="name">Email</label>
                     <input type="email"
                             class="form-control"
                             id="email"
-                            placeholder="Email">
+                            data-ng-model="userData.email"
+                            placeholder="{{ placeholders.email }}">
                 </div>
                 <div class="form-group">
+                    <label for="name">New password</label>
                     <input type="password"
                             class="form-control"
                             id="password"
-                            placeholder="New password">
+                            data-ng-model="userData.password"
+                            placeholder="Type your new password">
                 </div>
                 <div class="form-group">
                     <input type="password"
                             class="form-control"
                             id="verifyPassword"
-                            placeholder="Repeat your password">
+                            data-ng-model="userData.rePasswd"
+                            placeholder="Confirm your new password">
                 </div>
+                <p class="help-block text-danger"
+                        data-ng-if="userData.error">
+                    {{userData.error}}
+                </p>
+                <p class="help-block text-success"
+                        data-ng-if="userData.success">
+                    Info updated successfully
+                </p>
+                <p class="help-block">
+                    Fill only the fields you want to update
+                </p>
                 <button type="submit" class="btn btn-success">Update info</button>
             </form>
         </div>

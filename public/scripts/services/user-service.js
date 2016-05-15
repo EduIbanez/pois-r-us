@@ -2,14 +2,19 @@ angular.module('PoisRUs').service('userService', [
     '$http', '$resource', 'BaseRoutes', 'ApiRoutes',
     function($http, $resource, BaseRoutes, ApiRoutes) {
 
-        var users = $resource(BaseRoutes.apiRoot + ApiRoutes.USERS)
+        var User = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.SINGLE_USER,
+            { userId: '@id' },
+            {
+                update: { method: 'PUT' }
+            })
 
 
-        function createUser (userData, callback) {
-            return users.save({
+        function createUser(userData, callback) {
+            return User.save({
                 email: userData.email,
-                first_name: userData.fName,
-                last_name: userData.lName
+                firstName: userData.fName,
+                lastName: userData.lName
             }).$promise.then(
                 function onSuccess(value, headers) {
                     if (callback) callback(null, value.password);
@@ -19,9 +24,38 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
+        function getUserById(userId, callback) {
+            return User.get({ userId: userId },
+                            function(value, headers) {
+                                if (callback) callback(null, value.message);
+                            },
+                            function (value, headers) {
+                                if (callback) callback(value.data);
+                            });
+        }
+
+        function updateUser(userData, callback) {
+            var data = new User({
+                id: userData.id,
+                email: userData.email || undefined,
+                firstName: userData.fName || undefined,
+                lastName: userData.lName || undefined,
+                password: userData.password || undefined
+            })
+            return User.update({ userId: data.id }, data).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
         // Service API
         return {
-            createUser: createUser
+            createUser: createUser,
+            getUserById: getUserById,
+            updateUser: updateUser
         }
 
     }]);
