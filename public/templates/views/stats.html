@@ -1,10 +1,20 @@
-<div class="settings-view">
+<div ng-controller="LineCtrl">
+    <div class="settings-view">
 
-    <div data-navbar
-            data-active-section="stats"></div>
+        <div data-navbar
+             data-active-section="stats"></div>
 
-    <div class="container" style="padding: 60px">
-        <h1>Here go stats, followees and more profile information</h1>
-        <p>Coming soon...</p>
+        <div class="container" style="padding: 60px">
+            <h1>Here go stats, followees and more profile information</h1>
+            <p>Coming soon...</p>
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-legend="true" chart-series="series"
+                    chart-click="onClick" >
+            </canvas>
+            <h2>no vaaa @{{prueba}}</h2>
+            <h2>{{labels}}</h2>
+            <h2>{{series}}</h2>
+            <h2>{{data}}</h2>
+        </div>
     </div>
 </div>
