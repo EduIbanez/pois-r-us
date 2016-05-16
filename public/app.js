@@ -1,43 +1,42 @@
-var app = angular.module('PoisRUs', ['ui.router', 'ngResource', 'chart.js']);
+var app = angular.module('PoisRUs', ['ui.router', 'ngResource']);
 
-    app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
+    
+    $stateProvider
 
-        $stateProvider
+        .state('login', {
+            url: '/login',
+            templateUrl: '/templates/views/login.html',
+            controller: 'LoginCtrl'
+        })
 
-            .state('login', {
-                url: '/login',
-                templateUrl: '/templates/views/login.html',
-                controller: 'LoginCtrl'
-            })
+        .state('map', {
+            url: '/map',
+            templateUrl: '/templates/views/map.html',
+            controller: 'MapCtrl'
+        })
 
-            .state('map', {
-                url: '/map',
-                templateUrl: '/templates/views/map.html',
-                controller: 'MapCtrl'
-            })
+        .state('stats', {
+            url: '/stats',
+            templateUrl: '/templates/views/stats.html',
+        })
 
-            .state('stats', {
-                url: '/stats',
-                templateUrl: '/templates/views/stats.html',
-                controller: 'LineCtrl'
-            })
+        .state('settings', {
+            url: '/settings',
+            templateUrl: '/templates/views/settings.html',
+            controller: 'SettingsCtrl'
+        })
 
-            .state('settings', {
-                url: '/settings',
-                templateUrl: '/templates/views/settings.html',
-                controller: 'SettingsCtrl'
-            })
+        .state('admin', {
+            url: '/admin',
+            templateUrl: '/templates/views/stats.html',
+        })
 
-            .state('admin', {
-                url: '/admin',
-                templateUrl: '/templates/views/stats.html',
-            })
+    $urlRouterProvider.otherwise('map');
 
-        $urlRouterProvider.otherwise('map');
+});
 
-    });
-
-    app.constant('BaseRoutes', {
-        globalRoot: '',
-        apiRoot: '/api'
-    });
+app.constant('BaseRoutes', {
+    globalRoot: '',
+    apiRoot: '/api'
+});
