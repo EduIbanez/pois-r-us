@@ -1,4 +1,4 @@
-angular.module('PoisRUs').controller('LineCtrl', function($scope) {
+angular.module('PoisRUs').controller('StatsCtrl', function($scope) {
         $scope.prueba = "prueba";
         $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
         $scope.series = ['Series A', 'Series B'];

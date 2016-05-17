@@ -19,7 +19,7 @@ var app = angular.module('PoisRUs', ['ui.router', 'ngResource', 'chart.js']);
             .state('stats', {
                 url: '/stats',
                 templateUrl: '/templates/views/stats.html',
-                controller: 'LineCtrl'
+                controller: 'StatsCtrl'
             })
 
             .state('settings', {
