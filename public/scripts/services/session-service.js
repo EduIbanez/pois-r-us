@@ -13,7 +13,6 @@ angular.module('PoisRUs').service('sessionService', [
         if (_session) _sessionPromise = login(_session.email, _session.password);
 
         function login (email, password, remember, callback) {
-            console.log(email, password);
             $http.defaults.headers.common['Authorization'] = 
                     'Basic ' + btoa(email + ':' + password)
             return Auth.get().$promise.then(

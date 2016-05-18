@@ -1,10 +1,18 @@
 <div class="settings-view">
 
     <div data-navbar
-            data-active-section="stats"></div>
+         data-active-section="stats"></div>
 
     <div class="container" style="padding: 60px">
         <h1>Here go stats, followees and more profile information</h1>
         <p>Coming soon...</p>
+        <canvas id="line"
+                class="chart chart-line"
+                chart-data="data"
+                chart-labels="labels"
+                chart-legend="true"
+                chart-series="series"
+                chart-click="onChartClick" >
+        </canvas>
     </div>
 </div>
