@@ -13,6 +13,9 @@ function userDBtoAPI(userData) {
     if (userData.last_name) _transformedData.lastName = userData.last_name;
     if (userData.email) _transformedData.email = userData.email;
     if (userData.created_at) _transformedData.joinedAt = userData.created_at;
+    if (userData.fav_pois) _transformedData.favPois = userData.fav_pois;
+    if (userData.ruta) _transformedData.ruta = userData.ruta;
+    if (userData.following) _transformedData.following = userData.following;
     return _transformedData;
 }
 
@@ -23,6 +26,9 @@ function userAPItoDB(userData) {
     if (userData.lastName) _transformedData.last_name = userData.lastName;
     if (userData.email) _transformedData.email = userData.email;
     if (userData.password) _transformedData.password = userData.password;
+    if (userData.favPois) _transformedData.fav_pois = userData.favPois;
+    if (userData.ruta) _transformedData.ruta = userData.ruta;
+    if (userData.following) _transformedData.following = userData.following;
     return _transformedData;
 }
 
@@ -67,10 +73,9 @@ function poiAPItoDB(poiData) {
     return _transformedData;
 }
 
-
 module.exports = {
     userDBtoAPI: userDBtoAPI,
     userAPItoDB: userAPItoDB,
     poiDBtoAPI: poiDBtoAPI,
-    poiAPItoDB: poiAPItoDB
+    poiAPItoDB: poiAPItoDB,
 }

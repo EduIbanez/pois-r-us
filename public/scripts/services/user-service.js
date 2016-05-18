@@ -54,10 +54,20 @@ angular.module('PoisRUs').service('userService', [
         function searchUser(userData, callback) {
             return User.get({ first_name: userData},
                 function onSuccess (value, headers) {
-                    if (callback) callback(null, value);
+                    if (callback) callback(null, value.message);
                 },
                 function onError (value, headers) {
-                    if (callback) callback(value, null);
+                    if (callback) callback(value.data, null);
+                });
+        }
+
+        function getUsers(callback) {
+            return User.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
                 });
         }
 
@@ -65,6 +75,7 @@ angular.module('PoisRUs').service('userService', [
         return {
             createUser: createUser,
             getUserById: getUserById,
+            getUsers: getUsers,
             updateUser: updateUser,
             searchUser : searchUser
         }

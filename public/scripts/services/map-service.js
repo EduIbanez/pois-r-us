@@ -8,6 +8,7 @@ window._mapLoader = {
 angular.module('PoisRUs').factory('asyncGoogleMapsService', [
     function() {
         var _map;
+
         return {
             getLibrary: function(callback) {
                 var _cbWrapper = function() { callback(window.google.maps); };

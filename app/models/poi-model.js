@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
+var fecha = new Date().toJSON().slice(0,10);
 var poiSchema  = new Schema({
     'owner_id'        : { type: ObjectId, required: true },
     'name'            : { type: String, required: true },
@@ -10,7 +11,7 @@ var poiSchema  = new Schema({
     'file_uri'        : { type: String },
     'avg_punctuation' : { type: Number, required: true, default: 0 },
     'number_of_votes' : { type: Number, required: true, default: 0 },
-    'created_at'  : { type : Date, required    : true, default : Date.now() },
+    'created_at'  : { type : Date, required    : true, default : fecha },
     'coordinates' : {
         'lat': { type: Number, required: true },
         'lon': { type: Number, required: true }
