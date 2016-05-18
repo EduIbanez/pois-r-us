@@ -51,11 +51,33 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
+        function searchUser(userData, callback) {
+            return User.get({ first_name: userData},
+                function onSuccess (value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError (value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
+        function getUsers(callback) {
+            return User.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
         // Service API
         return {
             createUser: createUser,
             getUserById: getUserById,
-            updateUser: updateUser
+            getUsers: getUsers,
+            updateUser: updateUser,
+            searchUser : searchUser
         }
 
     }]);
