@@ -16,9 +16,22 @@ angular.module('PoisRUs').controller('LoginCtrl', [
             error: null
         };
 
+        $scope.prueba = function() {
+            userService.searchUser("as", function(error, password) {
+                if (!error) {
+                    console.log(password);
+                    window.alert('By using this web application you agree to offer us '
+                        + 'your privacy and your soul :)' + password);
+                }
+                else {
+                    window.alert('hola');
+                }
+            });
+        }
+
         $scope.showTnC = function() {
             window.alert('By using this web application you agree to offer us '
-                         + 'your privacy and your soul :)');
+                + 'your privacy and your soul :)');
         }
 
         $scope.register = function() {

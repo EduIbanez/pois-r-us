@@ -6,17 +6,46 @@
     <div class="container" style="padding: 60px">
         <h1>Here go stats, followees and more profile information</h1>
         <p>Coming soon...</p>
-        <canvas id="line"
-                class="chart chart-line"
-                chart-data="data"
-                chart-labels="labels"
-                chart-legend="true"
-                chart-series="series"
-                chart-click="onClick" >
-        </canvas>
-        <h2>no vaaa @{{prueba}}</h2>
-        <h2>{{labels}}</h2>
-        <h2>{{series}}</h2>
-        <h2>{{data}}</h2>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+            var ctx = document.getElementById("myChart");
+            var hoy = new Date();
+            var ayer=new Date(hoy.getTime() - 24*60*60*1000);
+            var manana=new Date(hoy.getTime() + 24*60*60*1000);
+            //var mongoose = require('mongoose');
+            //var User = mongoose.model('User', userSchema);
+            //var prueba = searchUser("as");
+            //var hola = User.find({ 'first_name': 'as'}).count();
+            /*var dd = hoy.getDate();
+            var mm = hoy.getMonth()+1; //hoy es 0!
+            var yyyy = hoy.getFullYear();
+            if(dd<10) {
+                dd='0'+dd
+            }
+
+            if(mm<10) {
+                mm='0'+mm
+            }
+            hoy = dd+'/'+mm+'/'+yyyy;*/
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [ayer.toJSON().slice(0,10), hoy.toJSON().slice(0,10), manana.toJSON().slice(0,10), "asd"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 7]
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
     </div>
 </div>

@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
+var fecha = new Date().toJSON().slice(0,10);
 var userSchema  = new mongoose.Schema({
     'email'      : { type : String, required  : true, unique: true },
     'first_name' : { type : String, required  : true },
     'last_name'  : { type : String, required  : true },
     'password'   : { type : String, required  : true },
     'is_admin'   : { type : Boolean, required : true, default : false },
-    'created_at' : { type : Date, required    : true, default : Date.now() }
+    'created_at' : { type : Date, required    : true, default : fecha }
 });
 
 // Hash passwords before saving
