@@ -54,7 +54,7 @@ function poiDBtoAPI(poiData) {
     }
     if (poiData.file_uri) _transformedData.fileUri = poiData.file_uri;
     if (poiData.avg_punctuation)
-        _transformedData.avgPuntcuation = poiData.avg_puntctuation;
+        _transformedData.avgPunctuation = poiData.avg_punctuation;
     if (poiData.number_of_votes)
         _transformedData.numberOfVotes = poiData.number_of_votes;
     if (poiData.created_at) _transformedData.createdAt = poiData.created_at;
