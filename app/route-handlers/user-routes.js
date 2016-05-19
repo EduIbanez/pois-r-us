@@ -9,10 +9,16 @@ var authMiddleware  = require('./auth-middleware');
 var router = express.Router();
 
 router.route(apiPaths.USERS)
-    .get(function(req, res) {
-        UserModel.find({},
-                       { _id: 1, first_name: 1, last_name: 1 },
-                       function(err, data) {
+    .get(authMiddleware.basicHttp, function(req, res) {
+        console.log(req.auth)
+        UserModel.find({ $or: [
+           { is_admin: { $exists: false }},
+           { is_admin: false },
+        ]},
+        req.auth && req.auth.isAdmin
+            ? null
+            : { _id: 1, first_name: 1, last_name: 1 },
+        function(err, data) {
             if (err) {
                 var response = { error: true, message: 'Error fetching data' };
                 res.status(500).json(response);
@@ -57,8 +63,8 @@ router.route(apiPaths.SINGLE_USER)
             favourites: 1,
             created_at: 1
         };
-        if (req.auth.id && (req.auth.id.toString() === req.params.userId
-                            || req.auth.isAdmin)) {
+        if (req.auth && (req.auth.id.toString() === req.params.userId
+                         || req.auth.isAdmin)) {
             projection.email = 1;
         }
         UserModel.findById(req.params.userId, projection, function(err, data) {
@@ -79,7 +85,7 @@ router.route(apiPaths.SINGLE_USER)
     })
     .put(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         var _newData = formatConversor.userAPItoDB(req.body);
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 if (err) {
                     var response = { error: true, message: err };
@@ -111,7 +117,7 @@ router.route(apiPaths.SINGLE_USER)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findByIdAndRemove(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -163,7 +169,7 @@ router.route(apiPaths.USER_FOLLOWEES)
             });
     })
     .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -203,7 +209,7 @@ router.route(apiPaths.USER_FOLLOWEES)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -266,7 +272,7 @@ router.route(apiPaths.USER_FAVOURITES)
             });
     })
     .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -308,7 +314,7 @@ router.route(apiPaths.USER_FAVOURITES)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {

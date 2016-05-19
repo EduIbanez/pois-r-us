@@ -30,7 +30,8 @@ var app = angular.module('PoisRUs', ['ui.router', 'ngResource', 'chart.js']);
 
             .state('admin', {
                 url: '/admin',
-                templateUrl: '/templates/views/stats.html',
+                templateUrl: '/templates/views/admin.html',
+                controller: 'AdminCtrl'
             })
 
         $urlRouterProvider.otherwise('map');

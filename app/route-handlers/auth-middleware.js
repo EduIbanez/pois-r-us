@@ -26,7 +26,8 @@ var basicHttpAuthInterceptor = function(req, res, next) {
                     id: data._id,
                     firstName: data.first_name,
                     lastName: data.last_name,
-                    email: data.email
+                    email: data.email,
+                    isAdmin: data.is_admin
                 };
                 next();
             } else {

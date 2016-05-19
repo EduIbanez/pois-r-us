@@ -7,6 +7,7 @@
 var mongoose   = require('mongoose');
 var expressApp = require("./express-config");
 var config     = require("../config");
+var UserModel  = require("./models/user-model");
 
 var server;  // Keep a reference to the server instance
 var port = process.env.PORT || config.port || 3000;
@@ -17,6 +18,21 @@ var port = process.env.PORT || config.port || 3000;
  */
 function start(cb) {
     mongoose.connect(config.database.uri);
+    UserModel.remove({ is_admin: true }).then(function(data) {
+        return new UserModel({
+            first_name: 'root',
+            last_name: 'root',
+            email: config.admin.email,
+            password: config.admin.password,
+            is_admin: true
+        }).save();
+    }).then(function(data) {
+        console.log('Admin. credentials:');
+        console.log('- Email: ' + config.admin.email);
+        console.log('- Password: ' + config.admin.password);
+    }).catch(function(err) {
+        console.error(err);
+    });
     server = expressApp.listen(port, function() {
         console.log("Something beautiful is happening on port " + port);
         if (cb) cb();

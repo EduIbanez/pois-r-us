@@ -13,6 +13,7 @@ function userDBtoAPI(userData) {
     if (userData.last_name) _transformedData.lastName = userData.last_name;
     if (userData.email) _transformedData.email = userData.email;
     if (userData.created_at) _transformedData.joinedAt = userData.created_at;
+    if (userData.is_admin) _transformedData.isAdmin = userData.is_admin;
     if (userData.fav_pois) _transformedData.favPois = userData.fav_pois;
     if (userData.ruta) _transformedData.ruta = userData.ruta;
     _transformedData.pois = '/api/users/' + userData._id + '/pois';

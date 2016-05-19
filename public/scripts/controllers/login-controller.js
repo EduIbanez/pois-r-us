@@ -50,7 +50,8 @@ angular.module('PoisRUs').controller('LoginCtrl', [
                                  $scope.loginData.password,
                                  $scope.loginData.remember,
                                  function(error, sessionData) {
-                if (!error) $state.go('map');
+                if (!error && sessionData.isAdmin) $state.go('admin');
+                else if (!error) $state.go('map');
                 else $scope.login.error = true;
             });
             $scope.login.password = null;

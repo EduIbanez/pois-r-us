@@ -1,6 +1,14 @@
 angular.module('PoisRUs').controller('AdminCtrl', [
-    '$scope', 'userService',
-    function($scope, userService) {
+    '$scope', '$state', 'userService', 'sessionService',
+    function($scope, $state, userService, sessionService) {
+
+        sessionService.getSession().then(
+            function(session) {
+                console.log(session);
+                if (!session.isAdmin) $state.go('map');
+            },
+            function() { $state.go('login'); }
+        );
 
         $scope.mostrar = "pulse el botón para mostrar los usuarios en el servidor";
 
