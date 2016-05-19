@@ -18,7 +18,9 @@ var _apiDefinition = {
     USER_TIMELINE   : '/users/:userId/following/pois',
     USER_FOLLOWERS  : '/users/:userId/followers',
     USER_POIS       : '/users/:userId/pois',
+	FECHA           : '/users/fecha/:fecha',
     POIS            : '/pois',
+    MAX             : '/max',
     SINGLE_POI      : '/pois/:poiId',
     POI_RATINGS     : '/pois/:poiId/ratings'
 }

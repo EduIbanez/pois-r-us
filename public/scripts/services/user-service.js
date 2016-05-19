@@ -8,6 +8,10 @@ angular.module('PoisRUs').service('userService', [
             {
                 update: { method: 'PUT' }
             })
+			
+		var Fecha = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FECHA,
+            { fecha: '@first_name' });
 
 
         function createUser(userData, callback) {
@@ -51,8 +55,8 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
-        function searchUser(userData, callback) {
-            return User.get({ first_name: userData},
+        function searchFecha(userData, callback) {
+            return Fecha.get({ fecha : userData},
                 function onSuccess (value, headers) {
                     if (callback) callback(null, value.message);
                 },
@@ -77,7 +81,7 @@ angular.module('PoisRUs').service('userService', [
             getUserById: getUserById,
             getUsers: getUsers,
             updateUser: updateUser,
-            searchUser : searchUser
+            searchFecha : searchFecha
         }
 
     }]);

@@ -14,6 +14,10 @@ angular.module('PoisRUs').service('poiService', [
         var FollowPoi = $resource(
             BaseRoutes.apiRoot + ApiRoutes.USER_TIMELINE, { userId: '@id' })
 
+        var Max = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.MAX,
+            { poiId: '@id' })
+
         function getPois(callback) {
             return Poi.get(
                 function(value, headers) {
@@ -57,12 +61,24 @@ angular.module('PoisRUs').service('poiService', [
                 });
         }
 
+        function getMax(callback) {
+            return Max.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
         // Service API
         return {
             getPois: getPois,
             getUserPois: getUserPois,
             getFavouritePois: getFavouritePois,
             getFolloweePois: getFolloweePois,
+            getMax: getMax,
+            // getPOIById: getPOIById,
         }
 
     }]);

@@ -151,4 +151,22 @@ router.route(apiPaths.POI_RATINGS)
         });
     });
 
+router.route(apiPaths.MAX)
+    .get(function(req, res) {
+        //PoiModel.find().sort({_id:-1}).limit(1).pretty()
+        PoiModel.find({$query:{}, $orderby : { avg_punctuation : -1 }}, function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
+            }
+        });
+    })
+
 module.exports = router;
