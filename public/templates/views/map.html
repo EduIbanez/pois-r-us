@@ -14,6 +14,26 @@
         <modal-footer>{{ modalData.footer }}</modal-footer>
     </div>
 
+    <div data-modal-dialog
+            class="modal-fullscreen bottom"
+            id="poi-modal"
+            data-visible="poiModalOpen"
+            data-sections="{
+                header: true,
+                body: true,
+                footer: false
+            }">
+        <modal-title>POIs</modal-title>
+        <modal-body>
+            <h3>Your pois</h3>
+            <p>{{ userPois }}</p>
+            <h3>Favourite pois</h3>
+            <p>{{ favouritePois }}</p>
+            <h3>Your followees' pois</h3>
+            <p>{{ followeePois }}</p>
+        </modal-body>
+    </div>
+
     <div data-navbar
             data-active-section="map"></div>
 
@@ -25,7 +45,8 @@
 
     <div class="container-fluid" style="padding: 0;">
 
-        <div data-map></div>
+        <div data-map
+                data-pois="shownPois"></div>
 
     </div>
 </div>
