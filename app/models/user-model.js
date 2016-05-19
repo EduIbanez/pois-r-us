@@ -3,14 +3,15 @@ var bcrypt   = require('bcrypt-nodejs');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var userSchema  = new mongoose.Schema({
-    'email'      : { type: String, required: true, unique: true },
-    'first_name' : { type: String, required: true },
-    'last_name'  : { type: String, required: true },
-    'password'   : { type: String, required: true },
-    'created_at' : { type: Date, required: true, default: Date.now },
-    'is_admin'   : { type: Boolean },
-    'favourites' : { type: [ObjectId], default: [] },
-    'followees'  : { type: [ObjectId], default: [] }
+    'email'       : { type: String, required: true, unique: true },
+    'first_name'  : { type: String, required: true },
+    'last_name'   : { type: String, required: true },
+    'password'    : { type: String, required: true },
+    'created_at'  : { type: Date, required: true, default: Date.now },
+    'last_access' : { type: Date, default: Date.now },
+    'is_admin'    : { type: Boolean },
+    'favourites'  : { type: [ObjectId], default: [] },
+    'followees'   : { type: [ObjectId], default: [] }
 });
 
 // Save the original object when retrieved from the database. This is useful
@@ -75,7 +76,10 @@ userSchema.statics.validateCredentials = function(email, password, callback) {
         else user.validatePassword(password, function(err, match) {
             if (err) callback(err); // Internal error
             else if (!match) callback(null, null);
-            else callback(null, user);
+            else {
+                user.last_access = Date.now();
+                return user.save(callback);
+            }
         });
     });
 }
