@@ -451,4 +451,54 @@ router.route(apiPaths.FECHA)
         });
     })
 
+
+router.route(apiPaths.FOLLOW)
+    .get(function(req, res) {
+        UserModel.aggregate([
+            { $group: {
+                _id: "$email",
+                followees: { $push:"$followees"},
+                total: { $sum: 1 }
+            }},
+            { "$sort": { "total": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
+    })
+
+router.route(apiPaths.FAV)
+    .get(function(req, res) {
+        UserModel.aggregate([
+            {$unwind: "$favourites"},
+            { $group: {
+                _id: "$email",
+                favourites: { $push:"$favourites"},
+                size : {$sum:1}
+            }},
+            { "$sort": { "size": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
+    })
+
 module.exports = router;

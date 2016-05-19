@@ -13,6 +13,14 @@ angular.module('PoisRUs').service('userService', [
             BaseRoutes.apiRoot + ApiRoutes.FECHA,
             { fecha: '@first_name' });
 
+        var MoreF = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FAV,
+            { fecha: '@first_name' });
+
+        var MoreS = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FOLLOW,
+            { fecha: '@first_name' });
+
 
         function createUser(userData, callback) {
             return User.save({
@@ -75,13 +83,35 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
+        function getMoreS(callback) {
+            return MoreF.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getMoreF(callback) {
+            return MoreS.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
         // Service API
         return {
             createUser: createUser,
             getUserById: getUserById,
             getUsers: getUsers,
             updateUser: updateUser,
-            searchFecha : searchFecha
+            searchFecha : searchFecha,
+            getMoreF : getMoreF,
+            getMoreS : getMoreS,
         }
 
     }]);

@@ -153,8 +153,47 @@ router.route(apiPaths.POI_RATINGS)
 
 router.route(apiPaths.MAX)
     .get(function(req, res) {
-        //PoiModel.find().sort({_id:-1}).limit(1).pretty()
-        PoiModel.find({$query:{}, $orderby : { avg_punctuation : -1 }}, function(err, data) {
+        PoiModel.find({}).sort({number_of_votes : -1}).exec(function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
+            }
+        });
+    });
+	
+	router.route(apiPaths.MORE)
+    .get(function(req, res) {
+        PoiModel.aggregate([
+            { $group: {
+                _id: "$owner_id",
+                total: { $sum: 1  }
+            }},
+            { "$sort": { "total": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
+    })
+
+router.route(apiPaths.MAXA)
+    .get(function(req, res) {
+        PoiModel.find({}).sort({avg_punctuation : -1}).exec(function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
