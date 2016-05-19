@@ -10,12 +10,14 @@
 // -----------------------------------------------------------------------------
 
 var _apiDefinition = {
-    AUTH         : '/auth',
-    USERS        : '/users',
-    SINGLE_USER  : '/users/:userId',
-    POIS         : '/pois',
-    SINGLE_POI   : '/pois/:poiId',
-    POI_RATINGS  : '/pois/:poiId/ratings'
+    AUTH            : '/auth',
+    USERS           : '/users',
+    SINGLE_USER     : '/users/:userId',
+    USER_FAVOURITES : '/users/:userId/favourites',
+    USER_FOLLOWEES  : '/users/:userId/following',
+    POIS            : '/pois',
+    SINGLE_POI      : '/pois/:poiId',
+    POI_RATINGS     : '/pois/:poiId/ratings'
 }
 
 /* EXPORT */
