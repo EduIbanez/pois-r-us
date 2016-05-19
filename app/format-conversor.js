@@ -94,9 +94,10 @@ function routeDBtoAPI(routeData) {
 }
 
 function routeAPItoDB(routeData) {
-    var _transformedData = { coordinates: {} };
+    var _transformedData = {};
     if (routeData.id) _transformedData._id = routeData.id;
     if (routeData.ownerId) _transformedData.owner_id = routeData.ownerId;
+    if (routeData.name) _transformedData.name = routeData.name;
     if (routeData.pois) _transformedData.pois = routeData.pois;
     return _transformedData;
 }
