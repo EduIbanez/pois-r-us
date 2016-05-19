@@ -34,7 +34,7 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         $scope.users = "32";
 
         $scope.cargarUsers = function() {
-            userService.searchFecha("as",function(error, data) {
+            userService.searchFecha(ayer,function(error, data) {
                 if (!error) {
                     $scope.primero = data.length;
                     $scope.data = [
@@ -48,7 +48,7 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         }
 
         $scope.cargarUsers2 = function() {
-            userService.searchFecha("as",function(error, data) {
+            userService.searchFecha(fecha,function(error, data) {
                 if (!error) {
                     $scope.segundo = data.length;
                     $scope.data = [
@@ -62,7 +62,7 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         }
 
         $scope.cargarUsers3 = function() {
-            userService.searchFecha("as",function(error, data) {
+            userService.searchFecha(manana,function(error, data) {
                 if (!error) {
                     $scope.tercero = data.length;
                     $scope.data = [

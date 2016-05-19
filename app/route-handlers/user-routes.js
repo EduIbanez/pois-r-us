@@ -433,10 +433,9 @@ router.route(apiPaths.USER_TIMELINE)
             });
     });
 
-// XXX: first_name == req.params.fecha??
 router.route(apiPaths.FECHA)
     .get(function(req, res) {
-        UserModel.find({created_at : {'$regex': req.params.fecha}}, function(err, data) {
+        UserModel.find({createdAt : {'$regex': req.params.fecha}}, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
