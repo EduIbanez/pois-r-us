@@ -343,4 +343,32 @@ router.route(apiPaths.USER_FAVOURITES)
         }
     });
 
+router.route(apiPaths.USER_POIS)
+    .get(function(req, res) {
+        UserModel.findById(req.params.userId, { favourites: 1 })
+            .then(function(data) {
+                if (data) {
+                    return PoiModel.find({ owner_id: { $in: req.params.userId }});
+                } else {
+                    return null;
+                }
+            })
+            .then(function(data) {
+                if (data) {
+                    var response = {
+                        error: false,
+                        message: data.map(formatConversor.poiDBtoAPI)
+                    };
+                    res.json(response);
+                } else {
+                    var response = { error: true, message: 'User not found' };
+                    res.status(404).json(response);
+                }
+            })
+            .catch(function(err) {
+                var response = { error: true, message: err };
+                res.status(500).json(response);
+            });
+    })
+
 module.exports = router;

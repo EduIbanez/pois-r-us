@@ -15,10 +15,9 @@ function userDBtoAPI(userData) {
     if (userData.created_at) _transformedData.joinedAt = userData.created_at;
     if (userData.fav_pois) _transformedData.favPois = userData.fav_pois;
     if (userData.ruta) _transformedData.ruta = userData.ruta;
-    if (userData.followees)
-        _transformedData.following = '/api/users/' + userData._id + '/following';
-    if (userData.favourites)
-        _transformedData.favourites = '/api/users/' + userData._id + '/favourites';
+    _transformedData.pois = '/api/users/' + userData._id + '/pois';
+    _transformedData.following = '/api/users/' + userData._id + '/following';
+    _transformedData.favourites = '/api/users/' + userData._id + '/favourites';
     return _transformedData;
 }
 
