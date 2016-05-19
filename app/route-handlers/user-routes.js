@@ -479,7 +479,6 @@ router.route(apiPaths.FOLLOW)
 router.route(apiPaths.FAV)
     .get(function(req, res) {
         UserModel.aggregate([
-            {$unwind: "$favourites"},
             { $group: {
                 _id: "$email",
                 favourites: { $push:"$favourites"},

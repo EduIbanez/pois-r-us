@@ -6,6 +6,20 @@
     <div class="container" style="padding: 60px" ng-init="init()">
         <h1>Here go stats, followees and more profile information</h1>
         <p>Coming soon...</p>
+        <canvas id="line7"
+                class="chart chart-bar"
+                chart-data="data7"
+                chart-labels="labels7"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <canvas id="line6"
+                class="chart chart-bar"
+                chart-data="data6"
+                chart-labels="labels6"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
         <canvas id="line4"
                 class="chart chart-bar"
                 chart-data="data4"
@@ -20,18 +34,6 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
-        <canvas id="line6"
-                class="chart chart-bar"
-                chart-data="data6"
-                chart-options="options"
-                chart-click="onChartClick" >
-        </canvas>
-        <canvas id="line7"
-                class="chart chart-bar"
-                chart-data="data7"
-                chart-options="options"
-                chart-click="onChartClick" >
-        </canvas>
         <canvas id="line5"
                 class="chart chart-bar"
                 chart-data="data5"
@@ -39,6 +41,16 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        {{mostrar3}}
+        <br>
+        {{mostrar4}}
+        <br>
+        {{mostrar5}}
+        <br>
+        {{mostrar6}}
+        <br>
+        {{mostrar7}}
+        <br>
         <button ng-click="init()">Actualizar</button>
     </div>
 </div>

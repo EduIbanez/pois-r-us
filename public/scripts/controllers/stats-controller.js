@@ -2,12 +2,21 @@ angular.module('PoisRUs').controller('StatsCtrl', [
     '$scope', 'userService', 'poiService',
     function($scope, userService, poiService) {
 
-        $scope.mostrar = "12";
-        $scope.mostrar2 = "12";
         $scope.mostrar3 = "12";
+        $scope.mostrar4 = "12";
+        $scope.mostrar5 = "12";
+        $scope.mostrar6 = "12";
+        $scope.mostrar7 = "12";
+        $scope.data3 = [12];
+        $scope.data4 = [12];
+        $scope.data5 = [12];
+        $scope.data6 = [12];
+        $scope.data7 = [12];
         $scope.labels3 = ["más votado"];
         $scope.labels4 = ["más valorado"];
         $scope.labels5 = ["usuario con más POIs"];
+        $scope.labels6 = ["más votado"];
+        $scope.labels7 = ["más valorado"];
         $scope.options = {
             responsive: true,
             maintainAspectRatio: true,
@@ -20,6 +29,7 @@ angular.module('PoisRUs').controller('StatsCtrl', [
         $scope.Max = function() {
             poiService.getMax(function(error, data) {
                 if (!error && data.length>=3) {
+                    $scope.mostrar3 = data[0].numberOfVotes;
                     $scope.data3 = [
                         [data[0].numberOfVotes, data[1].numberOfVotes, data[2].numberOfVotes]
                     ];
@@ -37,6 +47,7 @@ angular.module('PoisRUs').controller('StatsCtrl', [
         $scope.MaxP = function() {
             poiService.getMaxa(function(error, data) {
                 if (!error && data.length>=3) {
+                    $scope.mostrar4 = data[0].avgPunctuation;
                     $scope.data4 = [
                         [data[0].avgPunctuation, data[1].avgPunctuation, data[2].avgPunctuation]
                     ];
@@ -54,6 +65,7 @@ angular.module('PoisRUs').controller('StatsCtrl', [
         $scope.More = function() {
             poiService.getMore(function(error, data) {
                 if (!error && data.length>=1) {
+                    $scope.mostrar5 = data[0].total;
                     $scope.data5 = [
                         [data[0].total]
                     ];
@@ -71,6 +83,7 @@ angular.module('PoisRUs').controller('StatsCtrl', [
         $scope.MoreS = function() {
             userService.getMoreS(function(error, data) {
                 if (!error && data.length>=1) {
+                    $scope.mostrar6 = data[0].total;
                     $scope.data6 = [
                         [data[0].total]
                     ];
@@ -87,9 +100,10 @@ angular.module('PoisRUs').controller('StatsCtrl', [
 
         $scope.MoreF = function() {
             userService.getMoreF(function(error, data) {
-                if (!error && data.length>=1) {
+                if (!error) {
+                    $scope.mostrar7 = data[0].size;
                     $scope.data7 = [
-                        [data[0].total]
+                        [data[0].size]
                     ];
                     $scope.labels7 = [data[0]._id];
                 }

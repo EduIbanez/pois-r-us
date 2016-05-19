@@ -11,7 +11,7 @@ angular.module('PoisRUs').service('userService', [
 			
 		var Fecha = $resource(
             BaseRoutes.apiRoot + ApiRoutes.FECHA,
-            { fecha: '@first_name' });
+            { fecha: '@created_at' });
 
         var MoreF = $resource(
             BaseRoutes.apiRoot + ApiRoutes.FAV,
@@ -84,7 +84,7 @@ angular.module('PoisRUs').service('userService', [
         }
 
         function getMoreS(callback) {
-            return MoreF.get(
+            return MoreS.get(
                 function(value, headers) {
                     if (callback) callback(null, value.message);
                 },
@@ -94,7 +94,7 @@ angular.module('PoisRUs').service('userService', [
         }
 
         function getMoreF(callback) {
-            return MoreS.get(
+            return MoreF.get(
                 function(value, headers) {
                     if (callback) callback(null, value.message);
                 },
