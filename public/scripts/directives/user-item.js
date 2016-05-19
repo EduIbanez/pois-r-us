@@ -26,11 +26,11 @@ angular.module('PoisRUs').directive('userItem', [
             link: function(scope, element, attrs) {
                 scope.isFollowed = false;
                 sessionService.getSession().then(function(session) {
-                    // userService.getFollowers(session.id, function(err, data) {
-                        // scope.isFollowed =
-                            // data.map(function(itm) { return itm.id })
-                                // .indexOf(scope.user.id) !== -1;
-                    // });
+                    userService.getFollowees(session.id, function(err, data) {
+                        scope.isFollowed =
+                            data.map(function(itm) { return itm.id })
+                                .indexOf(scope.user.id) !== -1;
+                    });
                 });
                 scope.loggedIn = function() { return sessionService.isLoggedIn(); }
             }

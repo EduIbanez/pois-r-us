@@ -1,6 +1,6 @@
 angular.module('PoisRUs').controller('MapCtrl', [
-    '$scope', 'sessionService', 'poiService', 'searchService',
-    function($scope, sessionService, poiService, searchService) {
+    '$scope', 'sessionService', 'poiService', 'searchService', 'userService',
+    function($scope, sessionService, poiService, searchService, userService) {
 
         $scope.modalOpen = false;
         $scope.modalData = {};
@@ -129,6 +129,27 @@ angular.module('PoisRUs').controller('MapCtrl', [
                 else $scope.searchResults.users = data;
             });
         };
+
+        $scope.onFollow = function(user, value) {
+            sessionService.getSession().then(function(session) {
+                if (value) {
+                    userService.follow(user.id, session.id, function(err, data) {
+                        if (err) window.alert('There was an error', err);
+                        else {
+                            loadPois();
+                        }
+                    });
+                } else {
+                    userService.unfollow(user.id, session.id, function(err, data) {
+                        if (err) window.alert('There was an error', err);
+                        else {
+                            loadPois();
+                        }
+                    });
+                }
+            }).catch(function(err) { console.log('Not allowed to follow', err); });
+        }
+
 
         function loadPois() {
             poiService.getPois(function(err, data) {
