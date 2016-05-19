@@ -9,6 +9,10 @@ angular.module('PoisRUs').service('poiService', [
                 update: { method: 'PUT' }
             })
 
+        var Max = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.MAX,
+            { poiId: '@id' })
+
 
         function createPOI(userData, callback) {
             return Poi.save({
@@ -61,12 +65,23 @@ angular.module('PoisRUs').service('poiService', [
                 });
         }
 
+        function getMax(callback) {
+            return Max.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
         // Service API
         return {
             createPOI: createPOI,
             getPOIById: getPOIById,
             getPOIs: getPOIs,
             updatePOI: updatePOI,
+            getMax: getMax,
         }
 
     }]);

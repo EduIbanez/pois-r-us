@@ -83,12 +83,28 @@ angular.module('PoisRUs').controller('StatsCtrl', [
             });
         }
 
+        $scope.Max = function() {
+            poiService.getMax(function(error, data) {
+                if (!error) {
+                    $scope.mostrar = data;
+                    /*$scope.todos = data.length;
+                    $scope.data = [
+                        [$scope.todos, $scope.users]
+                    ];*/
+                }
+                else {
+                    $scope.mostrar = (error);
+                }
+            });
+        }
+
         $scope.init = function() {
             $scope.cargarUsers();
             $scope.cargarUsers2();
             $scope.cargarUsers3();
             $scope.allPOIS();
             $scope.allUsers();
+            $scope.Max();
         }
 
         $scope.labels = [ayer.toJSON().slice(0,10), fecha.toJSON().slice(0,10), manana.toJSON().slice(0,10)];
