@@ -53,10 +53,12 @@ function poiDBtoAPI(poiData) {
         _transformedData.lon = poiData.coordinates.lon;
     }
     if (poiData.file_uri) _transformedData.fileUri = poiData.file_uri;
-    if (poiData.avg_punctuation)
+    if (poiData.avg_punctuation !== undefined) {
         _transformedData.avgPunctuation = poiData.avg_punctuation;
-    if (poiData.number_of_votes)
+    }
+    if (poiData.number_of_votes !== undefined) {
         _transformedData.numberOfVotes = poiData.number_of_votes;
+    }
     if (poiData.created_at) _transformedData.createdAt = poiData.created_at;
     return _transformedData;
 }
