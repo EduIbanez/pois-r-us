@@ -3,7 +3,7 @@
     <div data-navbar
          data-active-section="stats"></div>
 
-    <div class="container" style="padding: 60px" ng-init="init()">
+    <div class="container" style="padding: 60px">
         <canvas id="line3"
                 class="chart chart-bar"
                 chart-data="data3"
@@ -12,6 +12,7 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        <button ng-click="Max()" class="btn btn-success">Actualizar</button>
         <canvas id="line4"
                 class="chart chart-bar"
                 chart-data="data4"
@@ -20,6 +21,7 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        <button ng-click="MaxP()" class="btn btn-success">Actualizar</button>
         <canvas id="line5"
                 class="chart chart-bar"
                 chart-data="data5"
@@ -28,6 +30,7 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        <button ng-click="More()" class="btn btn-success">Actualizar</button>
         <canvas id="line6"
                 class="chart chart-bar"
                 chart-data="data6"
@@ -36,6 +39,7 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        <button ng-click="MoreS()" class="btn btn-success">Actualizar</button>
         <canvas id="line7"
                 class="chart chart-bar"
                 chart-data="data7"
@@ -44,6 +48,10 @@
                 chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
-        <button ng-click="init()" class="btn btn-success">Actualizar</button>
+        <button ng-click="MoreF()" class="btn btn-success">Actualizar</button>
+        <br>
+        {{mostrar7}}
+        <br>
+        <button ng-click="init()" class="btn btn-success">Actualizar Todo</button>
     </div>
 </div>

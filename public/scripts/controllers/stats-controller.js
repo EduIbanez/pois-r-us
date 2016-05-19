@@ -127,6 +127,7 @@ angular.module('PoisRUs').controller('StatsCtrl', [
             $scope.More();
             $scope.MoreF();
             $scope.MoreS();
+            $scope.prueba();
         }
 
         $scope.onChartClick = function (points, evt) {
