@@ -28,13 +28,13 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         var manana=new Date(fecha.getTime() + 24*60*60*1000);
         var ayer=new Date(fecha.getTime() - 24*60*60*1000);
         $scope.primero = "12";
-        $scope.segundo = "22";
-        $scope.tercero = "32";
-        $scope.todos = "32";
-        $scope.users = "32";
+        $scope.segundo = "7";
+        $scope.tercero = "7";
+        $scope.todos = "7";
+        $scope.users = "7";
 
         $scope.cargarUsers = function() {
-            userService.searchFecha(ayer,function(error, data) {
+            userService.searchFecha(ayer.toJSON().slice(0,10),function(error, data) {
                 if (!error) {
                     $scope.primero = data.length;
                     $scope.data = [
@@ -48,7 +48,7 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         }
 
         $scope.cargarUsers2 = function() {
-            userService.searchFecha(fecha,function(error, data) {
+            userService.searchFecha(fecha.toJSON().slice(0,10),function(error, data) {
                 if (!error) {
                     $scope.segundo = data.length;
                     $scope.data = [
@@ -62,7 +62,7 @@ angular.module('PoisRUs').controller('AdminCtrl', [
         }
 
         $scope.cargarUsers3 = function() {
-            userService.searchFecha(manana,function(error, data) {
+            userService.searchFecha(manana.toJSON().slice(0,10),function(error, data) {
                 if (!error) {
                     $scope.tercero = data.length;
                     $scope.data = [
