@@ -22,7 +22,9 @@ var _apiDefinition = {
     POIS            : '/pois',
     MAX             : '/max',
     SINGLE_POI      : '/pois/:poiId',
-    POI_RATINGS     : '/pois/:poiId/ratings'
+    POI_RATINGS     : '/pois/:poiId/ratings',
+    ROUTES          : '/routes',
+    SINGLE_ROUTE    : '/routes/:routeId'
 }
 
 /* EXPORT */

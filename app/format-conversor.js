@@ -63,7 +63,7 @@ function poiDBtoAPI(poiData) {
 
 function poiAPItoDB(poiData) {
     var _transformedData = { coordinates: {} };
-    if (poiData.id) _transformedData.id = poiData._id;
+    if (poiData.id) _transformedData._id = poiData.id;
     if (poiData.ownerId) _transformedData.owner_id = poiData.ownerId;
     if (poiData.name) _transformedData.name = poiData.name;
     if (poiData.description) _transformedData.description = poiData.description;
@@ -71,9 +71,33 @@ function poiAPItoDB(poiData) {
     if (poiData.lon) _transformedData.coordinates.lon = poiData.lon;
     if (poiData.fileUri) _transformedData.file_uri = poiData.fileUri;
     if (poiData.avgPunctuation)
-        _transformedData.avg_puntcuation = poiData.avgPuntctuation;
+        _transformedData.avg_punctuation = poiData.avgPunctuation;
     if (poiData.numberOfVotes)
         _transformedData.number_of_votes = poiData.numberOfVotes;
+    return _transformedData;
+}
+
+function routeDBtoAPI(routeData) {
+    var _transformedData = {};
+    if (routeData.name) _transformedData.name = routeData.name;
+    if (routeData.pois) _transformedData.pois = routeData.pois;
+    if (routeData._id) {
+        _transformedData.id = routeData._id;
+        _transformedData.url = '/api/routes/' + routeData._id;
+    }
+    if (routeData.owner_id) {
+        _transformedData.ownerId = routeData.owner_id;
+        _transformedData.ownerUrl = '/api/users/' + routeData.owner_id;
+    }
+    if (routeData.created_at) _transformedData.createdAt = routeData.created_at;
+    return _transformedData;
+}
+
+function routeAPItoDB(routeData) {
+    var _transformedData = { coordinates: {} };
+    if (routeData.id) _transformedData._id = routeData.id;
+    if (routeData.ownerId) _transformedData.owner_id = routeData.ownerId;
+    if (routeData.pois) _transformedData.pois = routeData.pois;
     return _transformedData;
 }
 
@@ -82,4 +106,6 @@ module.exports = {
     userAPItoDB: userAPItoDB,
     poiDBtoAPI: poiDBtoAPI,
     poiAPItoDB: poiAPItoDB,
+    routeAPItoDB: routeAPItoDB,
+    routeDBtoAPI: routeDBtoAPI
 }

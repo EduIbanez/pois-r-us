@@ -1,14 +1,14 @@
 var express  = require('express');
 var apiPaths = require('../../common/api-routes');
-var PoiModel = require('../models/poi-model');
+var RouteModel = require('../models/route-model');
 var formatConversor = require('../format-conversor');
 var authMiddleware  = require('./auth-middleware');
 
 var router = express.Router();
 
-router.route(apiPaths.POIS)
+router.route(apiPaths.ROUTES)
     .get(function(req, res) {
-        PoiModel.find({}, function(err, data) {
+        RouteModel.find({}, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
@@ -16,22 +16,17 @@ router.route(apiPaths.POIS)
             } else {
                 response = {
                     error: false,
-                    message: data.map(formatConversor.poiDBtoAPI)
+                    message: data.map(formatConversor.routeDBtoAPI)
                 };
                 res.json(response);
             }
         });
     })
     .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        new PoiModel({
+        new RouteModel({
             name: req.body.name,
-            description: req.body.description,
             owner_id: req.auth.id,
-            file_uri: req.body.file_uri,
-            coordinates: {
-                lat: req.body.lat,
-                lon: req.body.lon
-            }
+            pois: req.body.pois
         }).save(function(err, data) {
             var response = {};
             if (err) {
@@ -40,16 +35,16 @@ router.route(apiPaths.POIS)
             } else {
                 response = {
                     error: false,
-                    message: formatConversor.poiDBtoAPI(data)
+                    message: formatConversor.routeDBtoAPI(data)
                 };
                 res.json(response);
             }
         });
     });
 
-router.route(apiPaths.SINGLE_POI)
+router.route(apiPaths.SINGLE_ROUTE)
     .get(function(req, res) {
-        PoiModel.findById(req.params.poiId, function(err, data) {
+        RouteModel.findById(req.params.routeId, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
@@ -57,14 +52,14 @@ router.route(apiPaths.SINGLE_POI)
             } else {
                 response = {
                     error: false,
-                    message: formatConversor.poiDBtoAPI(data)
+                    message: formatConversor.routeDBtoAPI(data)
                 };
                 res.json(response);
             }
         });
     })
     .put(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        PoiModel.findById(req.params.poiId, function(err, data) {
+        RouteModel.findById(req.params.routeId, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
@@ -76,11 +71,10 @@ router.route(apiPaths.SINGLE_POI)
                 };
                 res.status(401).json(response);
             } else if (data) {
-                // Coordinates, score and number of votes shouldn't
-                // be updated through PUT /pois/:poiId
+                // Score and number of votes shouldn't
+                // be updated through PUT /routes/:routes
                 data.name = req.body.name || data.name;
-                data.description = req.body.description || data.description;
-                data.file_uri = req.body.file_uri;
+                data.pois = req.body.pois || data.pois;
                 data.save(function(err, data) {
                     if(err) {
                         response = { error: true, message: err };
@@ -88,7 +82,7 @@ router.route(apiPaths.SINGLE_POI)
                     } else {
                         response = {
                             error: false,
-                            message: formatConversor.poiDBtoAPI(data)
+                            message: formatConversor.routeDBtoAPI(data)
                         };
                         res.json(response);
                     }
@@ -100,7 +94,7 @@ router.route(apiPaths.SINGLE_POI)
         });
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        PoiModel.findByIdAndRemove(req.params.poiId, function(err, data) {
+        RouteModel.findByIdAndRemove(req.params.RouteId, function(err, data) {
             var response = {};
             if(err) {
                 response = { error: true, message: err };
@@ -114,57 +108,12 @@ router.route(apiPaths.SINGLE_POI)
             } else if (data) {
                 response = {
                     error: false,
-                    message: formatConversor.poiDBtoAPI(data)
+                    message: formatConversor.routeDBtoAPI(data)
                 };
                 res.json(response);
             } else {
                 response = { error: true, message: data };
                 res.status(404).json(response);
-            }
-        });
-    })
-
-router.route(apiPaths.POI_RATINGS)
-    .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        PoiModel.findById(req.params.poiId, function(err, data) {
-            var response = {};
-            if(err) {
-                response = { error: true, message: err };
-                res.status(500).json(response);
-            } else if (data) {
-                data.addRating(req.body.score, function(err, data) {
-                    if(err) {
-                        response = { error: true, message: err };
-                        res.status(400).json(response);
-                    } else {
-                        response = {
-                            error: false,
-                            message: formatConversor.poiDBtoAPI(data)
-                        };
-                        res.json(response);
-                    }
-                });
-            } else {
-                response = { error: true, message: data };
-                res.status(404).json(response);
-            }
-        });
-    });
-
-router.route(apiPaths.MAX)
-    .get(function(req, res) {
-        //PoiModel.find().sort({_id:-1}).limit(1).pretty()
-        PoiModel.find({$query:{}, $orderby : { avg_punctuation : -1 }}, function(err, data) {
-            var response = {};
-            if(err) {
-                response = { error: true, message: err };
-                res.status(500).json(response);
-            } else {
-                response = {
-                    error: false,
-                    message: data.map(formatConversor.poiDBtoAPI)
-                };
-                res.json(response);
             }
         });
     });

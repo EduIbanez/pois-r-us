@@ -13,6 +13,7 @@ var config = require("../config");
 
 var userRoutes = require('./route-handlers/user-routes');
 var poiRoutes  = require('./route-handlers/poi-routes');
+var routeRoutes = require('./route-handlers/route-routes');
 var authRoutes = require('./route-handlers/auth-routes');
 
 
@@ -50,6 +51,7 @@ app.use('/api/', function(req, res, next) {
 // Add the routes to the application
 app.use('/api/', userRoutes);
 app.use('/api/', poiRoutes);
+app.use('/api/', routeRoutes);
 app.use('/api/', authRoutes);
 
 // Serve the angular application on root
