@@ -134,6 +134,15 @@
     }
 }
 
+/* .modal-section { */
+    /* border-bottom: 1px solid #eee; */
+/* } */
+
+.poi-item {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
 #map {
     height: 100%;
 }

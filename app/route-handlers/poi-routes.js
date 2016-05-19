@@ -69,7 +69,8 @@ router.route(apiPaths.SINGLE_POI)
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
-            } else if (data && req.auth.id !== data.owner_id && !req.auth.isAdmin) {
+            } else if (data && req.auth.id != data.owner_id.toString() && !req.auth.isAdmin) {
+                console.log(req.auth.id, data.owner_id);
                 response = {
                     error: true,
                     message: 'Not authorized to PUT to ' + req.url
@@ -105,7 +106,7 @@ router.route(apiPaths.SINGLE_POI)
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
-            } else if (data && req.auth.id !== data.owner_id && !req.auth.isAdmin) {
+            } else if (data && req.auth.id != data.owner_id.toString() && !req.auth.isAdmin) {
                 response = {
                     error: true,
                     message: 'Not authorized to PUT to ' + req.url

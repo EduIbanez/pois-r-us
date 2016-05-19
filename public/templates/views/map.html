@@ -25,12 +25,36 @@
             }">
         <modal-title>POIs</modal-title>
         <modal-body>
-            <h3>Your pois</h3>
-            <p>{{ userPois }}</p>
-            <h3>Favourite pois</h3>
-            <p>{{ favouritePois }}</p>
-            <h3>Your followees' pois</h3>
-            <p>{{ followeePois }}</p>
+            <h2 class="modal-section">Your POI's</h2>
+            <p data-ng-if="userPois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in userPois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Favourite POI's</h2>
+            <p data-ng-if="favouritePois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in favouritePois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Your followees' POI's</h2>
+            <p data-ng-if="followeePois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in followeePois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
         </modal-body>
     </div>
 
@@ -44,7 +68,7 @@
                 footer: true
             }">
         <modal-title>
-            {{ selectedPoi.id ? 'New POI' : 'Edit POI' }}
+            {{ selectedPoi.id ? 'Edit POI' : 'New POI' }}
         </modal-title>
         <modal-body>
             <form>
@@ -119,6 +143,8 @@
     <div class="container-fluid" style="padding: 0;">
 
         <div data-map
+                data-center="center"
+                data-zoom="zoom"
                 data-pois="shownPois"></div>
 
     </div>

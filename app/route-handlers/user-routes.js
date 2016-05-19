@@ -320,11 +320,11 @@ router.route(apiPaths.USER_FAVOURITES)
                 if(err) {
                     response = { error: true, message: err };
                     res.status(500).json(response);
-                } else if (!req.body.poi) {
+                } else if (!req.query.poi) {
                     response = { error: true, message: '"poi" field required' };
                     res.status(400).json(response);
                 } else if (data) {
-                    data.favourites.splice(data.favourites.indexOf(req.body.poi));
+                    data.favourites.splice(data.favourites.indexOf(req.query.poi));
                     data.save(function(err, data) {
                         if(err) {
                             response = { error: true, message: err };
