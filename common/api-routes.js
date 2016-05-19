@@ -15,6 +15,7 @@ var _apiDefinition = {
     SINGLE_USER     : '/users/:userId',
     USER_FAVOURITES : '/users/:userId/favourites',
     USER_FOLLOWEES  : '/users/:userId/following',
+    USER_FOLLOWERS  : '/users/:userId/followers',
     USER_POIS       : '/users/:userId/pois',
     POIS            : '/pois',
     SINGLE_POI      : '/pois/:poiId',
