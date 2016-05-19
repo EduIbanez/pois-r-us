@@ -10,7 +10,6 @@ var router = express.Router();
 
 router.route(apiPaths.USERS)
     .get(authMiddleware.basicHttp, function(req, res) {
-        console.log(req.auth)
         UserModel.find({ $or: [
            { is_admin: { $exists: false }},
            { is_admin: false },
@@ -63,8 +62,9 @@ router.route(apiPaths.SINGLE_USER)
             favourites: 1,
             created_at: 1
         };
-        if (req.auth && (req.auth.id.toString() === req.params.userId
-                         || req.auth.isAdmin)) {
+        if (req.auth && (
+                (req.auth.id && req.auth.id.toString() === req.params.userId)
+                || req.auth.isAdmin)) {
             projection.email = 1;
         }
         UserModel.findById(req.params.userId, projection, function(err, data) {
@@ -392,6 +392,34 @@ router.route(apiPaths.USER_FOLLOWERS)
                     var response = {
                         error: false,
                         message: data.map(formatConversor.userDBtoAPI)
+                    };
+                    res.json(response);
+                } else {
+                    var response = { error: true, message: 'User not found' };
+                    res.status(404).json(response);
+                }
+            })
+            .catch(function(err) {
+                var response = { error: true, message: err };
+                res.status(500).json(response);
+            });
+    })
+
+router.route(apiPaths.USER_TIMELINE)
+    .get(function(req, res) {
+        UserModel.findById(req.params.userId, { followees: 1 })
+            .then(function(data) {
+                if (data) {
+                    return PoiModel.find({ owner_id: { $in: data.followees }});
+                } else {
+                    return null;
+                }
+            })
+            .then(function(data) {
+                if (data) {
+                    var response = {
+                        error: false,
+                        message: data.map(formatConversor.poiDBtoAPI)
                     };
                     res.json(response);
                 } else {
