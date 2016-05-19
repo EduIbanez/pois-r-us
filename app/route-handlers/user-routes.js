@@ -215,11 +215,12 @@ router.route(apiPaths.USER_FOLLOWEES)
                 if(err) {
                     response = { error: true, message: err };
                     res.status(500).json(response);
-                } else if (!req.body.followee) {
+                } else if (!req.query.followee) {
                     response = { error: true, message: '"followee" field required' };
+                    console.log(response);
                     res.status(400).json(response);
                 } else if (data) {
-                    data.followees.splice(data.followees.indexOf(req.body.followee));
+                    data.followees.splice(data.followees.indexOf(req.query.followee));
                     data.save(function(err, data) {
                         if(err) {
                             response = { error: true, message: err };
@@ -228,7 +229,7 @@ router.route(apiPaths.USER_FOLLOWEES)
                             response = {
                                 error: false,
                                 message: 'You not are following '
-                                    + req.body.followee
+                                    + req.query.followee
                                     + ' anymore'
                             };
                             res.json(response);
