@@ -6,8 +6,8 @@ var routeSchema  = new mongoose.Schema({
     'pois' : { type: [ObjectId], required: true },
     'owner_id'   : { type: String, required: true },
     'created_at' : { type: Date, required: true, default: Date.now },
-    'avg_punctuation' : { type: Date, required: true, default: 0 },
-    'number_of_votes' : { type: Date, required: true, default: 0 },
+    'avg_punctuation' : { type: Number, required: true, default: 0 },
+    'number_of_votes' : { type: Number, required: true, default: 0 }
 });
 
 // Method to add a new vote to the route
