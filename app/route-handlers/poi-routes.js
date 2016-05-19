@@ -69,7 +69,8 @@ router.route(apiPaths.SINGLE_POI)
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
-            } else if (data && req.auth.id !== data.owner_id) {
+            } else if (data && req.auth.id != data.owner_id.toString() && !req.auth.isAdmin) {
+                console.log(req.auth.id, data.owner_id);
                 response = {
                     error: true,
                     message: 'Not authorized to PUT to ' + req.url
@@ -105,7 +106,7 @@ router.route(apiPaths.SINGLE_POI)
             if(err) {
                 response = { error: true, message: err };
                 res.status(500).json(response);
-            } else if (data && req.auth.id !== data.owner_id) {
+            } else if (data && req.auth.id != data.owner_id.toString() && !req.auth.isAdmin) {
                 response = {
                     error: true,
                     message: 'Not authorized to PUT to ' + req.url
@@ -147,6 +148,63 @@ router.route(apiPaths.POI_RATINGS)
             } else {
                 response = { error: true, message: data };
                 res.status(404).json(response);
+            }
+        });
+    });
+
+router.route(apiPaths.MAX)
+    .get(function(req, res) {
+        PoiModel.find({}).sort({number_of_votes : -1}).exec(function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
+            }
+        });
+    });
+	
+	router.route(apiPaths.MORE)
+    .get(function(req, res) {
+        PoiModel.aggregate([
+            { $group: {
+                _id: "$owner_id",
+                total: { $sum: 1  }
+            }},
+            { "$sort": { "total": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
+    })
+
+router.route(apiPaths.MAXA)
+    .get(function(req, res) {
+        PoiModel.find({}).sort({avg_punctuation : -1}).exec(function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
             }
         });
     });

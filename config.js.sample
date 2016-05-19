@@ -22,6 +22,10 @@ switch(process.env.NODE_ENV) {
             password: 's3cr3t'
         };
         configuration.log = { enabled: false };
+        configuration.admin = {
+            email: 'root@toor.sudo',
+            password: 'supersecret'
+        };
         break;
     case 'dev':
         configuration.port = 3000;
@@ -35,6 +39,10 @@ switch(process.env.NODE_ENV) {
             enabled: true,
             level: 'dev'
         };
+        configuration.admin = {
+            email: 'root@toor.sudo',
+            password: 'supersecret'
+        };
         break;
     default:
         configuration.port = 3000;
@@ -47,6 +55,10 @@ switch(process.env.NODE_ENV) {
         configuration.log = {
             enabled: true,
             level: 'combined'
+        };
+        configuration.admin = {
+            email: 'root@toor.sudo',
+            password: 'supersecret'
         };
         break;
 }

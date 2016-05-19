@@ -14,6 +14,163 @@
         <modal-footer>{{ modalData.footer }}</modal-footer>
     </div>
 
+    <div data-modal-dialog
+            class="modal-fullscreen bottom"
+            id="search-modal"
+            data-visible="searchModalOpen"
+            data-sections="{
+                header: true,
+                body: true,
+                footer: false
+            }">
+        <modal-title>Search</modal-title>
+        <modal-body>
+            <form class="form-inline" ng-submit="search()">
+                <div class="form-group">
+                    <input type="text"
+                            class="form-control"
+                            data-ng-model="searchResults.query"
+                            placeholder="Search things here">
+                </div>
+                <button type="submit" class="btn btn-primary">Go!</button>
+            </form>
+            <h2 class="modal-section">POI's</h2>
+            <p data-ng-if="searchResults.pois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in searchResults.pois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Users</h2>
+            <p data-ng-if="searchResults.users.length === 0">There are no POIs here yet</p>
+            <!-- <p>{{ searchResults.users }}</p> -->
+            <div data-user-item
+                    data-ng-repeat="user in searchResults.users"
+                    data-on-follow="onFollow(user, value)"
+                    data-user="user"></div>
+        </modal-body>
+    </div>
+
+    <div data-modal-dialog
+            class="modal-fullscreen bottom"
+            id="poi-modal"
+            data-visible="poiModalOpen"
+            data-sections="{
+                header: true,
+                body: true,
+                footer: false
+            }">
+        <modal-title>POIs</modal-title>
+        <modal-body>
+            <h2 class="modal-section">Your POI's</h2>
+            <p data-ng-if="userPois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in userPois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Favourite POI's</h2>
+            <p data-ng-if="favouritePois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in favouritePois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Your followees' POI's</h2>
+            <p data-ng-if="followeePois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in followeePois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+        </modal-body>
+    </div>
+
+    <div data-modal-dialog
+            class="modal-fullscreen bottom"
+            id="edit-modal"
+            data-visible="editModalOpen"
+            data-sections="{
+                header: true,
+                body: true,
+                footer: true
+            }">
+        <modal-title>
+            {{ selectedPoi.id ? 'Edit POI' : 'New POI' }}
+        </modal-title>
+        <modal-body>
+            <form>
+                <div class="form-group">
+                    <label for="name">POI info</label>
+                    <input name="name"
+                            class="form-control"
+                            type="text"
+                            placeholder="POI name"
+                            data-ng-model="selectedPoi.name"
+                            required>
+                </div>
+                <div class="form-group">
+                    <textarea name="description"
+                            class="form-control"
+                            rows="5"
+                            placeholder="POI Description"
+                            data-ng-model="selectedPoi.description"
+                            required></textarea>
+                </div>
+                <div class="form-group">
+                    <input name="media"
+                            class="form-control"
+                            type="text"
+                            placeholder="Media file URI"
+                            data-ng-model="selectedPoi.fileUri">
+                </div>
+                <div class="form-group">
+                    <label for="lat">Coordinates</label>
+                    <input name="latitude"
+                            class="form-control"
+                            type="number"
+                            placeholder="Latitude"
+                            data-ng-model="selectedPoi.lat"
+                            required>
+                </div>
+                <div class="form-group">
+                    <input name="longitude"
+                            class="form-control"
+                            type="number"
+                            placeholder="Longitude"
+                            data-ng-model="selectedPoi.lon"
+                            required>
+                </div>
+            </form>
+        </modal-body>
+        <modal-footer>
+                <button type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    <span class="fa fa-times"></span>
+                    Cancel
+                </button>
+                <button type="button"
+                        class="btn btn-primary"
+                        data-ng-click="savePoi()">
+                    <span class="fa fa-check"></span>
+                    Save
+                </button>
+        </modal-footer>
+    </div>
+
     <div data-navbar
             data-active-section="map"></div>
 
@@ -25,7 +182,10 @@
 
     <div class="container-fluid" style="padding: 0;">
 
-        <div data-map></div>
+        <div data-map
+                data-center="center"
+                data-zoom="zoom"
+                data-pois="shownPois"></div>
 
     </div>
 </div>

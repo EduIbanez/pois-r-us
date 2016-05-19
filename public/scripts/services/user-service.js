@@ -9,6 +9,32 @@ angular.module('PoisRUs').service('userService', [
                 update: { method: 'PUT' }
             })
 
+		var Fecha = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FECHA,
+            { fecha: '@created_at' });
+
+        var MoreF = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FAV,
+            { fecha: '@first_name' });
+
+        var MoreS = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.FOLLOW,
+            { fecha: '@first_name' });
+
+        var Followers = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.USER_FOLLOWERS,
+            { userId: '@id' },
+            {
+                update: { method: 'PUT' }
+            })
+
+        var Followees = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.USER_FOLLOWEES,
+            { userId: '@id' },
+            {
+                update: { method: 'PUT' }
+            })
+
 
         function createUser(userData, callback) {
             return User.save({
@@ -51,8 +77,8 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
-        function searchUser(userData, callback) {
-            return User.get({ first_name: userData},
+        function searchFecha(userData, callback) {
+            return Fecha.get({ fecha : userData},
                 function onSuccess (value, headers) {
                     if (callback) callback(null, value.message);
                 },
@@ -71,13 +97,100 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
+        function getMoreS(callback) {
+            return MoreS.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getMoreF(callback) {
+            return MoreF.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getMoreF(callback) {
+            return MoreF.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getMoreF(callback) {
+            return MoreF.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getFollowers(userData, callback) {
+            return Followers.get({userId : userData},
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getFollowees(userData, callback) {
+            return Followees.get({userId : userData},
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function follow(followee, userId, callback) {
+            return Followees.save({ userId: userId }, { followee: followee }).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
+        function unfollow(followee, userId, callback) {
+            return Followees.remove({ userId: userId,  followee: followee }).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
         // Service API
         return {
             createUser: createUser,
             getUserById: getUserById,
             getUsers: getUsers,
             updateUser: updateUser,
-            searchUser : searchUser
+            searchFecha : searchFecha,
+            getMoreF : getMoreF,
+            getMoreS : getMoreS,
+            getFollowees : getFollowees,
+            getFollowers : getFollowers,
+            follow : follow,
+            unfollow : unfollow,
+
         }
 
     }]);

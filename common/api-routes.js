@@ -15,11 +15,22 @@ var _apiDefinition = {
     SINGLE_USER     : '/users/:userId',
     USER_FAVOURITES : '/users/:userId/favourites',
     USER_FOLLOWEES  : '/users/:userId/following',
+    USER_TIMELINE   : '/users/:userId/following/pois',
     USER_FOLLOWERS  : '/users/:userId/followers',
     USER_POIS       : '/users/:userId/pois',
+	FECHA           : '/users/fecha/:fecha',
     POIS            : '/pois',
+    MAX             : '/max',
+    MAXA            : '/maxa',
+    MORE            : '/more',
+    FOLLOW          : '/follow',
+    FAV             : '/fav',
     SINGLE_POI      : '/pois/:poiId',
-    POI_RATINGS     : '/pois/:poiId/ratings'
+    POI_RATINGS     : '/pois/:poiId/ratings',
+    ROUTES          : '/routes',
+    SINGLE_ROUTE    : '/routes/:routeId',
+    SEARCH_USERS    : '/search/users',
+    SEARCH_POIS     : '/search/pois'
 }
 
 /* EXPORT */

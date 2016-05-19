@@ -4,15 +4,54 @@
          data-active-section="stats"></div>
 
     <div class="container" style="padding: 60px">
-        <h1>Here go stats, followees and more profile information</h1>
-        <p>Coming soon...</p>
-        <canvas id="line"
-                class="chart chart-line"
-                chart-data="data"
-                chart-labels="labels"
-                chart-legend="true"
-                chart-series="series"
+        <canvas id="line3"
+                class="chart chart-bar"
+                chart-data="data3"
+                chart-labels="labels3"
+                chart-series="series3"
+                chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
+        <button ng-click="Max()" class="btn btn-success">Actualizar</button>
+        <canvas id="line4"
+                class="chart chart-bar"
+                chart-data="data4"
+                chart-labels="labels4"
+                chart-series="series4"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="MaxP()" class="btn btn-success">Actualizar</button>
+        <canvas id="line5"
+                class="chart chart-bar"
+                chart-data="data5"
+                chart-labels="labels5"
+                chart-series="series5"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="More()" class="btn btn-success">Actualizar</button>
+        <canvas id="line6"
+                class="chart chart-bar"
+                chart-data="data6"
+                chart-labels="labels6"
+                chart-series="series6"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="MoreS()" class="btn btn-success">Actualizar</button>
+        <canvas id="line7"
+                class="chart chart-bar"
+                chart-data="data7"
+                chart-labels="labels7"
+                chart-series="series7"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="MoreF()" class="btn btn-success">Actualizar</button>
+        <br>
+        {{mostrar7}}
+        <br>
+        <button ng-click="init()" class="btn btn-success">Actualizar Todo</button>
     </div>
 </div>

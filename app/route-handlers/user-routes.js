@@ -9,10 +9,15 @@ var authMiddleware  = require('./auth-middleware');
 var router = express.Router();
 
 router.route(apiPaths.USERS)
-    .get(function(req, res) {
-        UserModel.find({},
-                       { _id: 1, first_name: 1, last_name: 1 },
-                       function(err, data) {
+    .get(authMiddleware.basicHttp, function(req, res) {
+        UserModel.find({ $or: [
+           { is_admin: { $exists: false }},
+           { is_admin: false },
+        ]},
+        req.auth && req.auth.isAdmin
+            ? null
+            : { _id: 1, first_name: 1, last_name: 1 },
+        function(err, data) {
             if (err) {
                 var response = { error: true, message: 'Error fetching data' };
                 res.status(500).json(response);
@@ -57,8 +62,9 @@ router.route(apiPaths.SINGLE_USER)
             favourites: 1,
             created_at: 1
         };
-        if (req.auth.id && (req.auth.id.toString() === req.params.userId
-                            || req.auth.isAdmin)) {
+        if (req.auth && (
+                (req.auth.id && req.auth.id.toString() === req.params.userId)
+                || req.auth.isAdmin)) {
             projection.email = 1;
         }
         UserModel.findById(req.params.userId, projection, function(err, data) {
@@ -79,7 +85,7 @@ router.route(apiPaths.SINGLE_USER)
     })
     .put(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
         var _newData = formatConversor.userAPItoDB(req.body);
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 if (err) {
                     var response = { error: true, message: err };
@@ -111,7 +117,7 @@ router.route(apiPaths.SINGLE_USER)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findByIdAndRemove(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -163,7 +169,7 @@ router.route(apiPaths.USER_FOLLOWEES)
             });
     })
     .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -203,17 +209,18 @@ router.route(apiPaths.USER_FOLLOWEES)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
                     response = { error: true, message: err };
                     res.status(500).json(response);
-                } else if (!req.body.followee) {
+                } else if (!req.query.followee) {
                     response = { error: true, message: '"followee" field required' };
+                    console.log(response);
                     res.status(400).json(response);
                 } else if (data) {
-                    data.followees.splice(data.followees.indexOf(req.body.followee));
+                    data.followees.splice(data.followees.indexOf(req.query.followee));
                     data.save(function(err, data) {
                         if(err) {
                             response = { error: true, message: err };
@@ -222,7 +229,7 @@ router.route(apiPaths.USER_FOLLOWEES)
                             response = {
                                 error: false,
                                 message: 'You not are following '
-                                    + req.body.followee
+                                    + req.query.followee
                                     + ' anymore'
                             };
                             res.json(response);
@@ -266,7 +273,7 @@ router.route(apiPaths.USER_FAVOURITES)
             });
     })
     .post(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
@@ -308,17 +315,17 @@ router.route(apiPaths.USER_FAVOURITES)
         }
     })
     .delete(authMiddleware.basicHttp, authMiddleware.authRestriction, function(req, res) {
-        if (req.auth.id.toString() === req.params.userId) {
+        if (req.auth.id.toString() === req.params.userId || req.auth.isAdmin) {
             UserModel.findById(req.params.userId, function(err, data) {
                 var response = {};
                 if(err) {
                     response = { error: true, message: err };
                     res.status(500).json(response);
-                } else if (!req.body.poi) {
+                } else if (!req.query.poi) {
                     response = { error: true, message: '"poi" field required' };
                     res.status(400).json(response);
                 } else if (data) {
-                    data.favourites.splice(data.favourites.indexOf(req.body.poi));
+                    data.favourites.splice(data.favourites.indexOf(req.query.poi));
                     data.save(function(err, data) {
                         if(err) {
                             response = { error: true, message: err };
@@ -397,6 +404,100 @@ router.route(apiPaths.USER_FOLLOWERS)
                 var response = { error: true, message: err };
                 res.status(500).json(response);
             });
+    })
+
+router.route(apiPaths.USER_TIMELINE)
+    .get(function(req, res) {
+        UserModel.findById(req.params.userId, { followees: 1 })
+            .then(function(data) {
+                if (data) {
+                    return PoiModel.find({ owner_id: { $in: data.followees }});
+                } else {
+                    return null;
+                }
+            })
+            .then(function(data) {
+                if (data) {
+                    var response = {
+                        error: false,
+                        message: data.map(formatConversor.poiDBtoAPI)
+                    };
+                    res.json(response);
+                } else {
+                    var response = { error: true, message: 'User not found' };
+                    res.status(404).json(response);
+                }
+            })
+            .catch(function(err) {
+                var response = { error: true, message: err };
+                res.status(500).json(response);
+            });
+    });
+
+router.route(apiPaths.FECHA)
+    .get(function(req, res) {
+        UserModel.find({createdAt : {'$regex': req.params.fecha}}, function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
+            }
+        });
+    })
+
+
+router.route(apiPaths.FOLLOW)
+    .get(function(req, res) {
+        UserModel.aggregate([
+            { $group: {
+                _id: "$email",
+                followees: { $push:"$followees"},
+                total: { $sum: 1 }
+            }},
+            { "$sort": { "total": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
+    })
+
+router.route(apiPaths.FAV)
+    .get(function(req, res) {
+        UserModel.aggregate([
+            { $group: {
+                _id: "$email",
+                favourites: { $push:"$favourites"},
+                size : {$sum:1}
+            }},
+            { "$sort": { "size": -1 }},
+        ], function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data
+                };
+                res.json(response);
+            }
+        });
     })
 
 module.exports = router;
