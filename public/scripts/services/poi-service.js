@@ -115,6 +115,7 @@ angular.module('PoisRUs').service('poiService', [
                 });
         }
 
+
         // Service API
         return {
             createPoi: createPoi,
