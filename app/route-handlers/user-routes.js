@@ -405,4 +405,21 @@ router.route(apiPaths.USER_FOLLOWERS)
             });
     })
 
+router.route(apiPaths.FECHA)
+    .get(function(req, res) {
+        UserModel.find({first_name : req.params.fecha}, function(err, data) {
+            var response = {};
+            if(err) {
+                response = { error: true, message: err };
+                res.status(500).json(response);
+            } else {
+                response = {
+                    error: false,
+                    message: data.map(formatConversor.poiDBtoAPI)
+                };
+                res.json(response);
+            }
+        });
+    })
+
 module.exports = router;

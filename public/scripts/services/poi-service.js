@@ -1,21 +1,17 @@
-angular.module('PoisRUs').service('userService', [
+angular.module('PoisRUs').service('poiService', [
     '$http', '$resource', 'BaseRoutes', 'ApiRoutes',
     function($http, $resource, BaseRoutes, ApiRoutes) {
 
-        var User = $resource(
-            BaseRoutes.apiRoot + ApiRoutes.SINGLE_USER,
-            { userId: '@id' },
+        var Poi = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.POIS,
+            { poiId: '@id' },
             {
                 update: { method: 'PUT' }
             })
-			
-		var Fecha = $resource(
-            BaseRoutes.apiRoot + ApiRoutes.FECHA,
-            { fecha: '@first_name' });
 
 
-        function createUser(userData, callback) {
-            return User.save({
+        function createPOI(userData, callback) {
+            return Poi.save({
                 email: userData.email,
                 firstName: userData.fName,
                 lastName: userData.lName
@@ -28,18 +24,18 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
-        function getUserById(userId, callback) {
-            return User.get({ userId: userId },
-                            function(value, headers) {
-                                if (callback) callback(null, value.message);
-                            },
-                            function (value, headers) {
-                                if (callback) callback(value.data);
-                            });
+        function getPOIById(userId, callback) {
+            return Poi.get({ userId: userId },
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
         }
 
-        function updateUser(userData, callback) {
-            var data = new User({
+        function updatePOI(userData, callback) {
+            var data = new Poi({
                 id: userData.id,
                 email: userData.email || undefined,
                 firstName: userData.fName || undefined,
@@ -55,18 +51,8 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
-        function searchFecha(userData, callback) {
-            return Fecha.get({ fecha : userData},
-                function onSuccess (value, headers) {
-                    if (callback) callback(null, value.message);
-                },
-                function onError (value, headers) {
-                    if (callback) callback(value.data, null);
-                });
-        }
-
-        function getUsers(callback) {
-            return User.get(
+        function getPOIs(callback) {
+            return Poi.get(
                 function(value, headers) {
                     if (callback) callback(null, value.message);
                 },
@@ -77,11 +63,10 @@ angular.module('PoisRUs').service('userService', [
 
         // Service API
         return {
-            createUser: createUser,
-            getUserById: getUserById,
-            getUsers: getUsers,
-            updateUser: updateUser,
-            searchFecha : searchFecha
+            createPOI: createPOI,
+            getPOIById: getPOIById,
+            getPOIs: getPOIs,
+            updatePOI: updatePOI,
         }
 
     }]);

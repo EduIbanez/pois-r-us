@@ -3,16 +3,23 @@
     <div data-navbar
          data-active-section="stats"></div>
 
-    <div class="container" style="padding: 60px">
+    <div class="container" style="padding: 60px" ng-init="init()">
         <h1>Here go stats, followees and more profile information</h1>
         <p>Coming soon...</p>
         <canvas id="line"
-                class="chart chart-line"
+                class="chart chart-bar"
                 chart-data="data"
                 chart-labels="labels"
                 chart-legend="true"
-                chart-series="series"
                 chart-click="onChartClick" >
         </canvas>
+        <canvas id="line2"
+                class="chart chart-bar"
+                chart-data="data2"
+                chart-labels="labels2"
+                chart-legend="true"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="init()">Actualizar</button>
     </div>
 </div>
