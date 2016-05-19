@@ -1,4 +1,4 @@
-angular.module('PoisRUs').service('poiService', [
+angular.module('PoisRUs').service('searchService', [
     '$http', '$resource', 'BaseRoutes', 'ApiRoutes',
     function($http, $resource, BaseRoutes, ApiRoutes) {
 
