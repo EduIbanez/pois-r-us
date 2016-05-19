@@ -1,29 +1,63 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var userSchema  = new mongoose.Schema({
-    'email'      : { type : String, required  : true, unique: true },
-    'first_name' : { type : String, required  : true },
-    'last_name'  : { type : String, required  : true },
-    'password'   : { type : String, required  : true },
-    'is_admin'   : { type : Boolean, required : true, default : false },
-    'created_at' : { type : Date, required    : true, default : Date.now() }
+    'email'      : { type: String, required: true, unique: true },
+    'first_name' : { type: String, required: true },
+    'last_name'  : { type: String, required: true },
+    'password'   : { type: String, required: true },
+    'created_at' : { type: Date, required: true, default: Date.now },
+    'is_admin'   : { type: Boolean },
+    'favourites' : { type: [ObjectId], default: [] },
+    'followees'  : { type: [ObjectId], default: [] }
 });
 
-// Hash passwords before saving
-userSchema.pre('save', function(callback) {
-    var self = this;  //Keep reference to 'this' through callbacks
+// Save the original object when retrieved from the database. This is useful
+// when comparing previous values with new values
+userSchema.post('init', function() {
+    this._original = this.toObject();
+});
+
+// Normalize email before saving
+userSchema.pre('save', function(next) {
+    this.email = this.email.toLowerCase();
+    next();
+});
+
+// Hash password before saving
+userSchema.pre('save', function(next) {
+    var self = this;  //Keep reference to 'this' through nexts
     if (self.isModified('password')) {
         bcrypt.genSalt(5, function(err, salt) {
             bcrypt.hash(self.password, salt, null, function(err, hash) {
-                if (err) callback(err);
+                if (err) next(err);
                 else {
                     self.password = hash;
-                    callback();
+                    next();
                 }
             });
         });
-    } else callback();
+    } else next();
+});
+
+// Ensure followees are existing users
+userSchema.pre('save', function(next) {
+    var self = this;  //Keep reference to 'this' through callbacks
+    if (self.isModified('followees')
+            && self.followees.length >= self._original.followees.length) {
+        var updatedFollowees = self.followees.filter(function(item) {
+            self._original.followees.indexOf(item) == -1;
+        });
+        var promises = [];
+        for (var i = 0; i < updatedFollowees.length; i++) {
+            promises.push(this.count({_id: updatedFollowees[i]}));
+        }
+        Promise.all(promises).then(function(values) {
+            if (values.indexOf(0) == -1) next(); // If there is no key with 0 appearances
+            else next(new ValidationError('Followees must be existing users'));
+        });
+    } else next();
 });
 
 // Method to validate the password of a user asynchronously
