@@ -1,0 +1,4 @@
+Daniel
+Ha sido un trabajo bastante estresante por falta de tiempo, pero me ha ayudado a aprender angularjs así como su módulo de charts y usar los controladores de angular. También a manejar mejor javascript con node y su despliegue y afianzar los conceptos sobre REST así como manejar una API.
+Adrián
+He aprendido la importancia de ser bien disciplinado, así como distribuir bien el código en módulos para entender mejor el trabajo de los compañeros así como ellos el mío y poder compartirlo adecuadamente y distribuirlo sin ningún problema.

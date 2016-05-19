@@ -157,6 +157,26 @@ angular.module('PoisRUs').service('userService', [
                 });
         }
 
+        function follow(followee, userId, callback) {
+            return Followees.save({ userId: userId }, { followee: followee }).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
+        function unfollow(followee, userId, callback) {
+            return Followees.remove({ userId: userId,  followee: followee }).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
         // Service API
         return {
             createUser: createUser,
@@ -168,6 +188,9 @@ angular.module('PoisRUs').service('userService', [
             getMoreS : getMoreS,
             getFollowees : getFollowees,
             getFollowers : getFollowers,
+            follow : follow,
+            unfollow : unfollow,
+
         }
 
     }]);
