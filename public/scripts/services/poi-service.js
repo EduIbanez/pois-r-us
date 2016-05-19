@@ -18,6 +18,22 @@ angular.module('PoisRUs').service('poiService', [
             BaseRoutes.apiRoot + ApiRoutes.MAX,
             { poiId: '@id' })
 
+        function createPoi(poiData, callback) {
+            return Poi.save({
+                name: poiData.name,
+                description: poiData.description,
+                fileUri: poiData.fileUri,
+                lat: poiData.lat,
+                lon: poiData.lon
+            }).$promise.then(
+                function onSuccess(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function onError(value, headers) {
+                    if (callback) callback(value.data, null);
+                });
+        }
+
         function getPois(callback) {
             return Poi.get(
                 function(value, headers) {
@@ -73,6 +89,7 @@ angular.module('PoisRUs').service('poiService', [
 
         // Service API
         return {
+            createPoi: createPoi,
             getPois: getPois,
             getUserPois: getUserPois,
             getFavouritePois: getFavouritePois,

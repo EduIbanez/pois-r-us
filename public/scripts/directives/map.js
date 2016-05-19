@@ -29,7 +29,7 @@ angular.module('PoisRUs').directive('map', [
                             }));
                         }
                     });
-                });
+                }, true);
                 asyncGoogleMapsService.getLibrary(function(gmaps) {
                     map = new gmaps.Map(mapDiv, {
                         center: { lat: 41.6529866, lng: -0.8948288 },

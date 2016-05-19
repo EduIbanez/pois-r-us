@@ -22,8 +22,29 @@ angular.module('PoisRUs').controller('MapCtrl', [
             $scope.openModal('Routes', 'Here go favourite routes, user\'s routes and followee\'s routes');
         }
         $scope.onAddButton = function() {
-            $scope.openModal('Add new POI', 'Coming soon...');
+            $scope.selectedPoi = {
+                name: null,
+                description: null,
+                lat: null,
+                lon: null,
+                mediaUri: null
+            }
+            $scope.editModalOpen = true;
         }
+
+        $scope.savePoi = function() {
+            sessionService.getSession().then(function(session) {
+                poiService.createPoi($scope.selectedPoi, function(err, data) {
+                    if (err) window.alert('There was an error', err);
+                    else {
+                        window.alert('POI was successfully created');
+                        $scope.userPois.push(data);
+                        $scope.allPois.push(data);
+                        $scope.editModalOpen = false;
+                    }
+                });
+            }).catch(function(err) { console.log('Not allowed to save'); });
+        };
 
         poiService.getPois(function(err, data) {
             $scope.shownPois = data;
