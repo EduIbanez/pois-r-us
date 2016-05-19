@@ -28,7 +28,9 @@ var _apiDefinition = {
     SINGLE_POI      : '/pois/:poiId',
     POI_RATINGS     : '/pois/:poiId/ratings',
     ROUTES          : '/routes',
-    SINGLE_ROUTE    : '/routes/:routeId'
+    SINGLE_ROUTE    : '/routes/:routeId',
+    SEARCH_USERS    : '/search/users',
+    SEARCH_POIS     : '/search/pois'
 }
 
 /* EXPORT */
