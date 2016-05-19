@@ -2,113 +2,133 @@ angular.module('PoisRUs').controller('StatsCtrl', [
     '$scope', 'userService', 'poiService',
     function($scope, userService, poiService) {
 
-        $scope.mostrar = "12";
-        $scope.mostrar2 = "12";
-        var fecha=new Date();
-        var manana=new Date(fecha.getTime() + 24*60*60*1000);
-        var ayer=new Date(fecha.getTime() - 24*60*60*1000);
-        $scope.primero = "12";
-        $scope.segundo = "22";
-        $scope.tercero = "32";
-        $scope.todos = "32";
-        $scope.users = "32";
-
-        $scope.cargarUsers = function() {
-            userService.searchFecha("as",function(error, data) {
-                if (!error) {
-                    $scope.primero = data.length;
-                    $scope.data = [
-                        [$scope.primero, $scope.segundo, $scope.tercero]
-                    ];
-                }
-                else {
-                    $scope.mostrar = (error);
-                }
-            });
-        }
-
-        $scope.cargarUsers2 = function() {
-            userService.searchFecha("as",function(error, data) {
-                if (!error) {
-                    $scope.segundo = data.length;
-                    $scope.data = [
-                        [$scope.primero, $scope.segundo, $scope.tercero]
-                    ];
-                }
-                else {
-                    $scope.mostrar = (error);
-                }
-            });
-        }
-
-        $scope.cargarUsers3 = function() {
-            userService.searchFecha("as",function(error, data) {
-                if (!error) {
-                    $scope.tercero = data.length;
-                    $scope.data = [
-                        [$scope.primero, $scope.segundo, $scope.tercero]
-                    ];
-                }
-                else {
-                    $scope.mostrar = (error);
-                }
-            });
-        }
-
-        $scope.allUsers = function() {
-            userService.getUsers(function(error, data) {
-                if (!error) {
-                    $scope.users = $scope.todos/data.length;
-                    $scope.data2 = [
-                        [$scope.todos, $scope.users]
-                    ];
-                }
-                else {
-                    $scope.mostrar = (error);
-                }
-            });
-        };
-
-        $scope.allPois = function() {
-            poiService.getPois(function(error, data) {
-                if (!error) {
-                    $scope.todos = data.length;
-                    $scope.data = [
-                        [$scope.todos, $scope.users]
-                    ];
-                }
-                else {
-                    $scope.mostrar = (error);
-                }
-            });
+        $scope.mostrar3 = "12";
+        $scope.mostrar4 = "12";
+        $scope.mostrar5 = "12";
+        $scope.mostrar6 = "12";
+        $scope.mostrar7 = "12";
+        $scope.data3 = [12];
+        $scope.data4 = [12];
+        $scope.data5 = [12];
+        $scope.data6 = [12];
+        $scope.data7 = [12];
+        $scope.labels3 = ["más votado"];
+        $scope.labels4 = ["más valorado"];
+        $scope.labels5 = ["usuario con más POIs"];
+        $scope.labels6 = ["más votado"];
+        $scope.labels7 = ["más valorado"];
+        $scope.series3 = ['POI más votado'];
+        $scope.series4 = ['POI mejor valorado'];
+        $scope.series5 = ['Usuario con más POIs'];
+        $scope.series6 = ['Usuario con más seguidores'];
+        $scope.series7 = ['Usuario más seguido'];
+        $scope.options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            barDatasetSpacing: 1,
+            barShowStroke: true,
+            barStrokeWidth : 2,
+            barValueSpacing : 5
         };
 
         $scope.Max = function() {
             poiService.getMax(function(error, data) {
-                if (!error) {
-                    $scope.mostrar = data;
-                    /*$scope.todos = data.length;
-                    $scope.data = [
-                        [$scope.todos, $scope.users]
-                    ];*/
+                if (!error && data.length>=3) {
+                    $scope.mostrar3 = data[0].numberOfVotes + " " + data[0].name;
+                    $scope.data3 = [
+                        [data[0].numberOfVotes, data[1].numberOfVotes, data[2].numberOfVotes]
+                    ];
+                    $scope.labels3 = [data[0].name, data[1].name, data[2].name];
                 }
                 else {
-                    $scope.mostrar = (error);
+                    $scope.data3 = [
+                        0
+                    ];
+                    $scope.labels3 = ["no hay 3 POIs"];
+                }
+            });
+        };
+
+        $scope.MaxP = function() {
+            poiService.getMaxa(function(error, data) {
+                if (!error && data.length>=3) {
+                    $scope.mostrar4 = data[0].avgPunctuation + " " + data[0].name;
+                    $scope.data4 = [
+                        [data[0].avgPunctuation, data[1].avgPunctuation, data[2].avgPunctuation]
+                    ];
+                    $scope.labels4 = [data[0].name, data[1].name, data[2].name];
+                }
+                else {
+                    $scope.data4 = [
+                        0
+                    ];
+                    $scope.labels4 = ["no hay 3 POIs"];
+                }
+            });
+        };
+
+        $scope.More = function() {
+            poiService.getMore(function(error, data) {
+                if (!error && data.length>=1) {
+                    $scope.mostrar5 = data[0].total + " " + data[0]._id;
+                    $scope.data5 = [
+                        [data[0].total]
+                    ];
+                    $scope.labels5 = [data[0]._id];
+                }
+                else {
+                    $scope.data5 = [
+                        0
+                    ];
+                    $scope.labels5 = ["no hay POIs"];
+                }
+            });
+        };
+
+        $scope.MoreS = function() {
+            userService.getMoreS(function(error, data) {
+                if (!error && data.length>=1) {
+                    $scope.mostrar6 = data[0].total + " " + data[0]._id;
+                    $scope.data6 = [
+                        [data[0].total]
+                    ];
+                    $scope.labels6 = [data[0]._id];
+                }
+                else {
+                    $scope.data6 = [
+                        0
+                    ];
+                    $scope.labels6 = ["no hay POIs"];
+                }
+            });
+        };
+
+        $scope.MoreF = function() {
+            userService.getMoreF(function(error, data) {
+                if (!error) {
+                    $scope.mostrar7 = data[0].size + " " +data[0]._id;
+                    $scope.data7 = [
+                        [data[0].size]
+                    ];
+                    $scope.labels7 = [data[0]._id];
+                }
+                else {
+                    $scope.data7 = [
+                        0
+                    ];
+                    $scope.labels7 = ["no hay POIs"];
                 }
             });
         };
 
         $scope.init = function() {
-            $scope.cargarUsers();
-            $scope.cargarUsers2();
-            $scope.cargarUsers3();
-            $scope.allPois();
-            $scope.allUsers();
             $scope.Max();
+            $scope.MaxP();
+            $scope.More();
+            $scope.MoreF();
+            $scope.MoreS();
         }
 
-        $scope.labels = [ayer.toJSON().slice(0,10), fecha.toJSON().slice(0,10), manana.toJSON().slice(0,10)];
-        $scope.labels2 = ["POIs totales", "POIs por usuario"];
         $scope.onChartClick = function (points, evt) {
             console.log(points, evt);
         };

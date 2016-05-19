@@ -21,10 +21,16 @@ var _apiDefinition = {
 	FECHA           : '/users/fecha/:fecha',
     POIS            : '/pois',
     MAX             : '/max',
+    MAXA            : '/maxa',
+    MORE            : '/more',
+    FOLLOW          : '/follow',
+    FAV             : '/fav',
     SINGLE_POI      : '/pois/:poiId',
     POI_RATINGS     : '/pois/:poiId/ratings',
     ROUTES          : '/routes',
-    SINGLE_ROUTE    : '/routes/:routeId'
+    SINGLE_ROUTE    : '/routes/:routeId',
+    SEARCH_USERS    : '/search/users',
+    SEARCH_POIS     : '/search/pois'
 }
 
 /* EXPORT */

@@ -4,23 +4,46 @@
          data-active-section="stats"></div>
 
     <div class="container" style="padding: 60px" ng-init="init()">
-        <h1>Here go stats, followees and more profile information</h1>
-        <p>Coming soon...</p>
-        <canvas id="line"
+        <canvas id="line3"
                 class="chart chart-bar"
-                chart-data="data"
-                chart-labels="labels"
-                chart-legend="true"
+                chart-data="data3"
+                chart-labels="labels3"
+                chart-series="series3"
+                chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
-        <canvas id="line2"
+        <canvas id="line4"
                 class="chart chart-bar"
-                chart-data="data2"
-                chart-labels="labels2"
-                chart-legend="true"
+                chart-data="data4"
+                chart-labels="labels4"
+                chart-series="series4"
+                chart-options="options"
                 chart-click="onChartClick" >
         </canvas>
-        {{mostrar}}
-        <button ng-click="init()">Actualizar</button>
+        <canvas id="line5"
+                class="chart chart-bar"
+                chart-data="data5"
+                chart-labels="labels5"
+                chart-series="series5"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <canvas id="line6"
+                class="chart chart-bar"
+                chart-data="data6"
+                chart-labels="labels6"
+                chart-series="series6"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <canvas id="line7"
+                class="chart chart-bar"
+                chart-data="data7"
+                chart-labels="labels7"
+                chart-series="series7"
+                chart-options="options"
+                chart-click="onChartClick" >
+        </canvas>
+        <button ng-click="init()" class="btn btn-success">Actualizar</button>
     </div>
 </div>

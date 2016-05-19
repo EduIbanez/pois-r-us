@@ -19,6 +19,14 @@ angular.module('PoisRUs').service('poiService', [
             BaseRoutes.apiRoot + ApiRoutes.MAX,
             { poiId: '@id' })
 
+        var Maxa = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.MAXA,
+            { poiId: '@id' })
+
+        var More = $resource(
+            BaseRoutes.apiRoot + ApiRoutes.MORE,
+            { poiId: '@id' })
+
         function createPoi(poiData, callback) {
             return Poi.save({
                 name: poiData.name,
@@ -147,6 +155,27 @@ angular.module('PoisRUs').service('poiService', [
                 });
         }
 
+        function getMaxa(callback) {
+            return Maxa.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+        function getMore(callback) {
+            return More.get(
+                function(value, headers) {
+                    if (callback) callback(null, value.message);
+                },
+                function (value, headers) {
+                    if (callback) callback(value.data);
+                });
+        }
+
+
         // Service API
         return {
             createPoi: createPoi,
@@ -160,6 +189,8 @@ angular.module('PoisRUs').service('poiService', [
             ratePoi: ratePoi,
             likePoi: likePoi,
             dislikePoi: dislikePoi,
+            getMaxa: getMaxa,
+            getMore: getMore,
         }
 
     }]);
