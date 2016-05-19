@@ -4,7 +4,6 @@ angular.module('PoisRUs').controller('AdminCtrl', [
 
         sessionService.getSession().then(
             function(session) {
-                console.log(session);
                 if (!session.isAdmin) $state.go('map');
             },
             function() { $state.go('login'); }

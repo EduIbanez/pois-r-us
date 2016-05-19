@@ -1,6 +1,6 @@
 angular.module('PoisRUs').controller('MapCtrl', [
-    '$scope', 'sessionService', 'poiService',
-    function($scope, sessionService, poiService) {
+    '$scope', 'sessionService', 'poiService', 'searchService',
+    function($scope, sessionService, poiService, searchService) {
 
         $scope.modalOpen = false;
         $scope.modalData = {};
@@ -14,7 +14,7 @@ angular.module('PoisRUs').controller('MapCtrl', [
             $scope.modalOpen = true;
         }
         $scope.onSearchButton = function() {
-            $scope.openModal('Search', 'No results yet');
+            $scope.searchModalOpen = true;
         }
         $scope.onPoisButton = function() {
             $scope.poiModalOpen = true;
@@ -112,6 +112,22 @@ angular.module('PoisRUs').controller('MapCtrl', [
         $scope.selectPoi = function(poi) {
             $scope.center = { lat: poi.lat, lon: poi.lon };
             $scope.zoom = 20;
+        };
+
+        $scope.searchResults = {
+            query: null, // HACK: this should not be here, but breaks scope if not under an object
+            pois: [],
+            users: []
+        };
+        $scope.search = function() {
+            searchService.searchPOIs($scope.searchResults.query, function(err, data) {
+                if (err) console.log(err);
+                else $scope.searchResults.pois = data;
+            });
+            searchService.searchUsers($scope.searchResults.query, function(err, data) {
+                if (err) console.log(err);
+                else $scope.searchResults.users = data;
+            });
         };
 
         function loadPois() {

@@ -16,6 +16,46 @@
 
     <div data-modal-dialog
             class="modal-fullscreen bottom"
+            id="search-modal"
+            data-visible="searchModalOpen"
+            data-sections="{
+                header: true,
+                body: true,
+                footer: false
+            }">
+        <modal-title>Search</modal-title>
+        <modal-body>
+            <form class="form-inline" ng-submit="search()">
+                <div class="form-group">
+                    <input type="text"
+                            class="form-control"
+                            data-ng-model="searchResults.query"
+                            placeholder="Search things here">
+                </div>
+                <button type="submit" class="btn btn-primary">Go!</button>
+            </form>
+            <h2 class="modal-section">POI's</h2>
+            <p data-ng-if="searchResults.pois.length === 0">There are no POIs here yet</p>
+            <div data-poi-item
+                    data-ng-repeat="poi in searchResults.pois"
+                    data-on-details="selectPoi(poi)"
+                    data-on-edit="onEdit(poi)"
+                    data-on-remove="onRemove(poi)"
+                    data-on-rate="onRate(poi, rating)"
+                    data-on-like="onLike(poi, value)"
+                    data-poi="poi"></div>
+            <h2 class="modal-section">Users</h2>
+            <p data-ng-if="searchResults.users.length === 0">There are no POIs here yet</p>
+            <!-- <p>{{ searchResults.users }}</p> -->
+            <div data-user-item
+                    data-ng-repeat="user in searchResults.users"
+                    data-on-follow="onFollow(user, value)"
+                    data-user="user"></div>
+        </modal-body>
+    </div>
+
+    <div data-modal-dialog
+            class="modal-fullscreen bottom"
             id="poi-modal"
             data-visible="poiModalOpen"
             data-sections="{

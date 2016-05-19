@@ -1,18 +1,10 @@
-angular.module('PoisRUs').service('poiService', [
+angular.module('PoisRUs').service('searchService', [
     '$http', '$resource', 'BaseRoutes', 'ApiRoutes',
     function($http, $resource, BaseRoutes, ApiRoutes) {
 
-        var Poi = $resource(BaseRoutes.apiRoot + ApiRoutes.SEARCH_POIS,
-            { poiId: '@id' },
-            {
-                update: { method: 'PUT' }
-            })
+        var Poi = $resource(BaseRoutes.apiRoot + ApiRoutes.SEARCH_POIS);
 
-        var User = $resource(BaseRoutes.apiRoot + ApiRoutes.SEARCH_USERS,
-            { userId: '@id' },
-            {
-                update: { method: 'PUT' }
-            })
+        var User = $resource(BaseRoutes.apiRoot + ApiRoutes.SEARCH_USERS);
 
         function searchPOIs(poiData, callback) {
             return Poi.get({data : poiData},
